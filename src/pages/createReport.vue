@@ -64,25 +64,25 @@ const clickCreate = () => {
 
   // 文章格納
   message1.value = `
-        [プロジェクト名]${projectTxt(project.value)}<br>
-        [作業日]${workingDate(nowYYYYMMDD, startTime.value, endTime.value, DateStart.getDay())}<br>
-        [作業内容]<br>
+        1. [プロジェクト名]${projectTxt(project.value)}<br>
+        2. [作業日]${workingDate(nowYYYYMMDD, startTime.value, endTime.value, DateStart.getDay())}<br>
+        3. [作業内容]<br>
         ${worksToText(todayWorkedTextAry, result(todayResultTextAry), 'today')}<br>`
-  message2.value = `[次回作業予定日]<br>
+  message2.value = `4. [次回作業予定日]<br>
         ${workingDate(nextYYYYMMDD, nextStartTime.value, nextEndTime.value, DateNext.getDay())}<br>
-        [次回作業予定]<br>
+        5. [次回作業予定]<br>
         ${worksToText(nextWorkedTextAry, '', 'next')}<br>
         [問題点]<br>
         ${issueText.value}</p>`
   msg.value = `<P>ーーーーーーーーーーーーーーーーー
 【日報】<br>
-[プロジェクト名]${projectTxt(project.value)}
-[作業日]${workingDate(nowYYYYMMDD, startTime.value, endTime.value, DateStart.getDay())}
-[作業内容]
+1. [プロジェクト名]${projectTxt(project.value)}
+2. [作業日]${workingDate(nowYYYYMMDD, startTime.value, endTime.value, DateStart.getDay())}
+3. [作業内容]
 ${worksToText(todayWorkedTextAry, result(todayResultTextAry), 'today')}
-[次回作業予定日]
+4. [次回作業予定日]
 ${workingDate(nextYYYYMMDD, nextStartTime.value, nextEndTime.value, DateNext.getDay())}
-[次回作業予定]
+5. [次回作業予定]
 ${worksToText(nextWorkedTextAry, '', 'next')}
 [問題点]
 ${issueText.value}</p>`

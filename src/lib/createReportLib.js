@@ -27,7 +27,7 @@ export const worksToText = (wk, rslt, when) => {
       if (wk[i] === 0) {
         text += ''
       } else {
-        text += `${wk[i]}<br>
+        text += `3 - ${i + 1}. ${wk[i]}<br>
 →${rslt[i]}<br>
 `
       }
@@ -37,7 +37,7 @@ export const worksToText = (wk, rslt, when) => {
       if (wk[i] === 0) {
         text += ''
       } else {
-        text += `${wk[i]}<br>
+        text += `5 - ${i + 1}. ${wk[i]}<br>
 `
       }
     }
