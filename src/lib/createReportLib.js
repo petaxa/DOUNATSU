@@ -45,13 +45,13 @@ export const worksToText = (wk, rslt, when) => {
   return text
 }
 // 作業日時関数
-export const workingDate = (date, start, end, week) => {
-  // console.log(date)
-  // console.log(start)
-  // console.log(end)
-  // console.log(week)
-  const weekStr = ['日', '月', '火', '水', '木', '金', '土']
-  return `${date} (${weekStr[week]}) ${start}~${end}`
+export const workingDate = (date, timeAry, week) => {
+  const weekStr = ['日', '月', '火', '水', '木', '金', '土'] // 曜日配列
+  let timeTxt = '' // 作業時間文章
+  for (let i = 0; i < timeAry.length; i++) {
+    timeTxt += `${timeAry[i].startTime} ~ ${timeAry[i].endTime} `
+  }
+  return `${date} (${weekStr[week]}) ${timeTxt}`
 }
 // プロジェクトテキスト生成関数
 export const projectTxt = (project) => {
