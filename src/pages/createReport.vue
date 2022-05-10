@@ -110,7 +110,8 @@ const clickBack = () => {
   router.push('/')
 }
 
-// 今回作業増加ボタン押下時処理
+// 作業内容入力フォーム増減処理
+// 今回増加
 const clickTodayPlus = () => {
   todayFormCountAry.value.push(todayFormCount)
   todayWorkedAry.push('')
@@ -119,7 +120,7 @@ const clickTodayPlus = () => {
   todayFormCount++
 }
 
-// 次回作業増加ボタン押下時処理
+// 次回増加
 const clickNextPlus = () => {
   nextFormCountAry.value.push(nextFormCount)
   nextWorkedAry.push('')
@@ -127,7 +128,7 @@ const clickNextPlus = () => {
   nextFormCount++
 }
 
-// 今回作業減少ボタン押下時処理
+// 今回減少
 const clickTodayMin = () => {
   todayFormCountAry.value.pop()
   todayWorkedAry.pop()
@@ -136,7 +137,7 @@ const clickTodayMin = () => {
   todayFormCount--
 }
 
-// 次回作業増加ボタン押下時処理
+// 次回増加
 const clickNextMin = () => {
   nextFormCountAry.value.pop()
   nextWorkedAry.pop()
