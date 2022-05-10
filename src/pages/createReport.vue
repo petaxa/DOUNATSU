@@ -45,6 +45,7 @@ const workTypeAry = ['UT', 'UT', 'UT', 'UT'] // 今回作業課題タイプ
 const nextWorkedAry = ['', '', '', '', ''] // 次回作業内容
 const nextWorkTypeAry = ['UT', 'UT', 'UT', 'UT'] // 次回作業課題タイプ
 
+// 複数の入力項目をv-forで処理するときのindexとなる。
 let todayFormCount = 4 // 今回作業入力フォーム数
 let nextFormCount = 4 // 次回作業入力フォーム数
 const todayFormCountAry = ref([0, 1, 2, 3]) // 今回作業
