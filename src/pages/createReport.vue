@@ -25,12 +25,17 @@ tomorrow = yyyymmdd(tomorrow)
 const todayDate = ref(now) // 作業年月日TODO: 日付のフォーマット関数
 const nextDate = ref(tomorrow) // 次回作業予定年月日TODO: 日付のフォーマット関数
 
-const startTime = ref('14:00') // 作業開始時間
-const endTime = ref('22:00') // 作業終了時間
+const todayTimeAry = ref([
+  { startTime: '14:00', endTime: '22:00' },
+  { startTime: '15:00', endTime: '18:00' }
+]) // 今回作業時間配列
+
 const project = ref('') // 作業プロジェクト
 
-const nextStartTime = ref('14:00') // 作業開始時間
-const nextEndTime = ref('22:00') // 作業終了時間
+const nextTimeAry = ref([
+  { startTime: '14:00', endTime: '22:00' },
+  { startTime: '15:00', endTime: '18:00' }
+]) // 次回作業時間配列
 const issueText = ref('') // 備考欄
 
 const msg = ref('') // 本文
@@ -65,11 +70,11 @@ const clickCreate = () => {
   // 文章格納
   message1.value = `
         1. [プロジェクト名]${projectTxt(project.value)}<br>
-        2. [作業日]${workingDate(nowYYYYMMDD, startTime.value, endTime.value, DateStart.getDay())}<br>
+        2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}<br>
         3. [作業内容]<br>
         ${worksToText(todayWorkedTextAry, result(todayResultTextAry), 'today')}<br>`
   message2.value = `4. [次回作業予定日]<br>
-        ${workingDate(nextYYYYMMDD, nextStartTime.value, nextEndTime.value, DateNext.getDay())}<br>
+        ${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}<br>
         5. [次回作業予定]<br>
         ${worksToText(nextWorkedTextAry, '', 'next')}<br>
         [問題点]<br>
@@ -77,11 +82,11 @@ const clickCreate = () => {
   msg.value = `<P>ーーーーーーーーーーーーーーーーー
 【日報】<br>
 1. [プロジェクト名]${projectTxt(project.value)}
-2. [作業日]${workingDate(nowYYYYMMDD, startTime.value, endTime.value, DateStart.getDay())}
+2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}
 3. [作業内容]
 ${worksToText(todayWorkedTextAry, result(todayResultTextAry), 'today')}
 4. [次回作業予定日]
-${workingDate(nextYYYYMMDD, nextStartTime.value, nextEndTime.value, DateNext.getDay())}
+${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}
 5. [次回作業予定]
 ${worksToText(nextWorkedTextAry, '', 'next')}
 [問題点]
@@ -151,9 +156,11 @@ const clickNextMin = () => {
                 <div id="workedDate">
                     <div id="date-input">
                         <input type="date" v-model="todayDate" class="date" />
-                        <input type="time" v-model="startTime" class="time" />
-                        <input type="time" v-model="endTime" class="time" />
                         <input type="project" v-model="project" placeholder="OPAL" class="project" />
+                    </div>
+                    <div v-for="i of todayTimeAry" :key="i">
+                        <input type="time" v-model="i.startTime" class="time" />
+                        <input type="time" v-model="i.endTime" class="time" />
                     </div>
                     <div class="button">
                         <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
@@ -163,7 +170,7 @@ const clickNextMin = () => {
                 <div id="workedList">
                     <div class="form" v-for="item of todayFormCountAry" :key="item">
                         <input type="text" v-model="todayWorkedAry[item]" class="work" />
-                        <input type="number" v-model="todayResultAry[item]"  class="result" />
+                        <input type="number" v-model="todayResultAry[item]" class="result" />
                         <select name="workType" v-model="workTypeAry[item]" class="workType">
                             <option value="UT">UT課題</option>
                             <option value="none">none</option>
@@ -171,11 +178,14 @@ const clickNextMin = () => {
                     </div>
                 </div>
             </div>
+
             <div class="next">
                 <div id="willDate">
                     <input type="date" v-model="nextDate" class="date" />
-                    <input type="time" v-model="nextStartTime" class="time" />
-                    <input type="time" v-model="nextEndTime" class="time" />
+                </div>
+                <div v-for="i of nextTimeAry" :key="i">
+                    <input type="time" v-model="i.startTime" class="time" />
+                    <input type="time" v-model="i.endTime" class="time" />
                 </div>
                 <div id="willList">
                     <div>
@@ -192,6 +202,7 @@ const clickNextMin = () => {
                 </div>
             </div>
         </div>
+
         <div id="endContents">
             <div id="issue">
                 <textarea type="text" v-model="issueText" class="issue"></textarea>
@@ -213,9 +224,11 @@ const clickNextMin = () => {
     width: 100%;
     min-width: 450px;
 }
+
 #output {
     display: none;
 }
+
 input,
 select,
 button,
@@ -226,55 +239,67 @@ textarea {
     background-color: black;
     height: 25px;
 }
+
 .date {
     /* 日付 */
     width: 120px;
     margin-right: 5px;
 }
+
 .time {
     /* 時間 */
     width: 65px;
     margin-right: 5px;
 }
+
 .project {
     /* プロジェクト名 */
     width: 80px;
 }
+
 .work {
     /* 課題内容 */
     width: 200px;
     margin-right: 15px;
 }
+
 .result {
     /* 進捗 */
     width: 60px;
     margin-right: 10px;
 }
+
 .workType {
     width: 70px;
 }
+
 .finButton {
     /* 作成、戻るボタン */
     width: 60px;
     margin: 20px;
 }
+
 .formButton {
     /* フォーム増減ボタン */
     width: 40px;
     margin: 10px;
 }
+
 .issue {
     width: 400px;
     height: 60px;
     margin-top: 10px;
 }
+
 .form {
     margin-top: 5px;
 }
+
 #inputArea {
     display: flex;
     justify-content: space-between;
 }
+
 #createReport {
     margin: 10px;
 }
