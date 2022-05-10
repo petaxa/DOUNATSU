@@ -12,7 +12,7 @@ const yyyymmdd = (date) => {
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 }
 const slashyyyymmdd = (date) => {
-  return date.replace('-', '/')
+  return date.replace(/-/g, '/')
 }
 // デフォルト表示
 let now = new Date() // 現在年月日
