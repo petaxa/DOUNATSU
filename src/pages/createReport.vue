@@ -148,6 +148,27 @@ const clickNextMin = () => {
   nextFormCount--
 }
 
+// 作業時間入力フォーム増減処理
+
+// 今回増加
+const clickTodayTimePlus = () => {
+  todayTimeAry.value.push({ startTime: '', endTime: '' })
+}
+// 今回減少
+const clickTodayTimeMin = () => {
+  todayTimeAry.value.pop()
+}
+
+// 次回増加
+const clickNextTimePlus = () => {
+  nextTimeAry.value.push({ startTime: '', endTime: '' })
+}
+
+// 次回減少
+const clickNextTimeMin = () => {
+  nextTimeAry.value.pop()
+}
+
 </script>
 <template>
     <div id="createReport">
@@ -157,6 +178,10 @@ const clickNextMin = () => {
                     <div id="date-input">
                         <input type="date" v-model="todayDate" class="date" />
                         <input type="project" v-model="project" placeholder="OPAL" class="project" />
+                    </div>
+                    <div class="button">
+                        <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
+                        <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
                     </div>
                     <div v-for="i of todayTimeAry" :key="i">
                         <input type="time" v-model="i.startTime" class="time" />
@@ -182,6 +207,10 @@ const clickNextMin = () => {
             <div class="next">
                 <div id="willDate">
                     <input type="date" v-model="nextDate" class="date" />
+                </div>
+                <div class="button">
+                    <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
+                    <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
                 </div>
                 <div v-for="i of nextTimeAry" :key="i">
                     <input type="time" v-model="i.startTime" class="time" />
