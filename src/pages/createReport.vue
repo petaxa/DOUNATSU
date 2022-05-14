@@ -26,14 +26,14 @@ const todayDate = ref(now) // 作業年月日TODO: 日付のフォーマット�
 const nextDate = ref(tomorrow) // 次回作業予定年月日TODO: 日付のフォーマット関数
 
 const todayTimeAry = ref([
-  { startTime: '14:00', endTime: '17:00' },
+  { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
 ]) // 今回作業時間配列
 
 const project = ref('') // 作業プロジェクト
 
 const nextTimeAry = ref([
-  { startTime: '14:00', endTime: '17:00' },
+  { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
 ]) // 次回作業時間配列
 const issueText = ref('') // 備考欄
