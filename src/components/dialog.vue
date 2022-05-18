@@ -23,7 +23,6 @@ const props = defineProps({
 
 <style>
 #dialogOuter {
-    width: 30%;
     min-width: 450px;
     border: 5px solid orange;
     background-color: black;
@@ -42,6 +41,9 @@ const props = defineProps({
     display: flex;
     justify-content: space-between;
     margin: 15px;
+}
+#dialogTexts p {
+    margin:10px;
 }
 #dialogClose {
     display: flex;

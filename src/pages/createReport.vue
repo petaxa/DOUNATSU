@@ -205,7 +205,8 @@ const clickNextTimeMin = () => {
                             <option value="UT">UT課題</option>
                             <option value="none">none</option>
                         </select>
-                        <textarea v-model="workDetailAry[item]" cols="30" rows="10" style="display: block;"></textarea>
+                        <textarea v-model="workDetailAry[item]" cols="30" rows="10"
+                            style="display: block; height:fit-content"></textarea>
                     </div>
                 </div>
             </div>
@@ -233,19 +234,20 @@ const clickNextTimeMin = () => {
                             <option value="UT">UT課題</option>
                             <option value="none">none</option>
                         </select>
-                        <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10" style="display: block;"></textarea>
+                        <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10"
+                            style="display: block; height:fit-content"></textarea>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="endContents">
-            <div id="issue">
-                <textarea type="text" v-model="issueText" class="issue"></textarea>
-            </div>
-            <div>
-                <button id="create" @click="clickCreate" class="finButton">作成</button>
-                <button @click="clickBack" class="finButton">戻る</button>
+            <div id="endContents">
+                <div id="issue">
+                    <textarea type="text" v-model="issueText" class="issue"></textarea>
+                </div>
+                <div>
+                    <button id="create" @click="clickCreate" class="finButton">作成</button>
+                    <button @click="clickBack" class="finButton">戻る</button>
+                </div>
             </div>
         </div>
     </div>
