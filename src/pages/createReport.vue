@@ -47,8 +47,10 @@ const isClose = ref(true) // ダイアログ非表示フラグ
 const todayWorkedAry = ['', '', '', '', ''] // 今回作業内容
 const todayResultAry = ['', '', '', '', ''] // 今回作業進捗
 const workTypeAry = ['UT', 'UT', 'UT', 'UT'] // 今回作業課題タイプ
+const workDetailAry = ['', '', '', '', ''] // 今回作業内容詳細
 const nextWorkedAry = ['', '', '', '', ''] // 次回作業内容
 const nextWorkTypeAry = ['UT', 'UT', 'UT', 'UT'] // 次回作業課題タイプ
+const NextworkDetailAry = ['', '', '', '', ''] // 次回作業内容詳細
 
 // 複数の入力項目をv-forで処理するときのindexとなる。
 let todayFormCount = 4 // 今回作業入力フォーム数
@@ -73,11 +75,11 @@ const clickCreate = () => {
         1. [プロジェクト名]${projectTxt(project.value)}<br>
         2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}<br>
         3. [作業内容]<br>
-        ${worksToText(todayWorkedTextAry, result(todayResultTextAry), 'today')}<br>`
+        ${worksToText(todayWorkedTextAry, result(todayResultTextAry), workDetailAry, 'today')}<br>`
   message2.value = `4. [次回作業予定日]<br>
         ${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}<br>
         5. [次回作業予定]<br>
-        ${worksToText(nextWorkedTextAry, '', 'next')}<br>
+        ${worksToText(nextWorkedTextAry, '', NextworkDetailAry, 'next')}<br>
         [問題点]<br>
         ${issueText.value}</p>`
   msg.value = `<P>ーーーーーーーーーーーーーーーーー
@@ -85,11 +87,11 @@ const clickCreate = () => {
 1. [プロジェクト名]${projectTxt(project.value)}
 2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}
 3. [作業内容]
-${worksToText(todayWorkedTextAry, result(todayResultTextAry), 'today')}
+${worksToText(todayWorkedTextAry, result(todayResultTextAry), workDetailAry, 'today')}
 4. [次回作業予定日]
 ${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}
 5. [次回作業予定]
-${worksToText(nextWorkedTextAry, '', 'next')}
+${worksToText(nextWorkedTextAry, '', NextworkDetailAry, 'next')}
 [問題点]
 ${issueText.value}</p>`
   console.log(msg.value)
@@ -122,6 +124,7 @@ const clickTodayPlus = () => {
   todayWorkedAry.push('')
   todayResultAry.push('')
   workTypeAry.push('UT')
+  workDetailAry.push('')
   todayFormCount++
 }
 
@@ -139,6 +142,7 @@ const clickTodayMin = () => {
   todayWorkedAry.pop()
   todayResultAry.pop()
   workTypeAry.pop()
+  workDetailAry.pop()
   todayFormCount--
 }
 
@@ -201,6 +205,7 @@ const clickNextTimeMin = () => {
                             <option value="UT">UT課題</option>
                             <option value="none">none</option>
                         </select>
+                        <textarea v-model="workDetailAry[item]" cols="30" rows="10" style="display: block;"></textarea>
                     </div>
                 </div>
             </div>
@@ -228,6 +233,7 @@ const clickNextTimeMin = () => {
                             <option value="UT">UT課題</option>
                             <option value="none">none</option>
                         </select>
+                        <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10" style="display: block;"></textarea>
                     </div>
                 </div>
             </div>
@@ -322,7 +328,7 @@ textarea {
 }
 
 .form {
-    margin-top: 5px;
+    margin-top: 15px;
 }
 
 #inputArea {

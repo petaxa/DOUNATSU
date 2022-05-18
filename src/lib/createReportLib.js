@@ -20,7 +20,7 @@ export const works = (arg = '', select = '') => {
   return worksText
 }
 // 内容と結果の配列を入れて文章に成型
-export const worksToText = (wk, rslt, when) => {
+export const worksToText = (wk, rslt, detail, when) => {
   let text = ''
   if (when === 'today') {
     for (let i = 0; i < wk.length; i++) {
@@ -29,6 +29,7 @@ export const worksToText = (wk, rslt, when) => {
       } else {
         text += `3 - ${i + 1}. ${wk[i]}<br>
 →${rslt[i]}<br>
+${detail[i]}
 `
       }
     }
@@ -38,6 +39,7 @@ export const worksToText = (wk, rslt, when) => {
         text += ''
       } else {
         text += `5 - ${i + 1}. ${wk[i]}<br>
+        ${detail[i]}
 `
       }
     }
