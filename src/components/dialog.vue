@@ -27,7 +27,7 @@ const text2 = props.msg.split(splitNum)
 <style>
 #dialogOuter {
     min-width: 450px;
-    border: 5px solid orange;
+    border: 5px solid #74b1be;
     background-color: black;
     color: white;
     position: fixed;

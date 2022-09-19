@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import mainPage from '../pages/mainPage.vue'
 import createReport from '../pages/createReport.vue'
+import preparation from '../pages/preparation.vue'
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/createReport',
     name: 'createReport',
     component: createReport
+  },
+  {
+    path: '/preparation',
+    name: 'preparation',
+    component: preparation
   }
 ]
 

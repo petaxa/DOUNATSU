@@ -290,7 +290,7 @@ select,
 button,
 textarea {
     border-radius: 5px;
-    border: 1px solid orange;
+    border: 1px solid #74b1be;
     color: white;
     background-color: black;
     height: 25px;
