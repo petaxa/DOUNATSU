@@ -83,15 +83,20 @@ const clickCreate = () => {
         [問題点]<br>
         ${issueText.value}</p>`
   msg.value = `<P>ーーーーーーーーーーーーーーーーー
-【日報】<br>
+【日報】
 1. [プロジェクト名]${projectTxt(project.value)}
+
 2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}
+
 3. [作業内容]
 ${worksToText(todayWorkedTextAry, result(todayResultTextAry), workDetailAry, 'today')}
+
 4. [次回作業予定日]
 ${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}
+
 5. [次回作業予定]
 ${worksToText(nextWorkedTextAry, '', NextworkDetailAry, 'next')}
+
 [問題点]
 ${issueText.value}</p>`
   console.log(msg.value)

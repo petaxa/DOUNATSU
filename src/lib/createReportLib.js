@@ -20,29 +20,25 @@ export const works = (arg = '', select = '') => {
   return worksText
 }
 // 内容と結果の配列を入れて文章に成型
-export const worksToText = (wk, rslt, detail, when) => {
+export const worksToText = (works, rslt, detail, when) => {
   let text = ''
   if (when === 'today') {
-    for (let i = 0; i < wk.length; i++) {
-      if (wk[i] === 0) {
-        text += ''
-      } else {
-        text += `3 - ${i + 1}. ${wk[i]}<br>
-→${rslt[i]}<br>
-${detail[i]}
+    works.forEach((wk, index) => {
+      if (wk === 0) return
+      text += `3 - ${index + 1}. ${wk}
+→${rslt[index]}
+${detail[index]}
+
 `
-      }
-    }
+    })
   } else if (when === 'next') {
-    for (let i = 0; i < wk.length; i++) {
-      if (wk[i] === 0) {
-        text += ''
-      } else {
-        text += `5 - ${i + 1}. ${wk[i]}<br>
-        ${detail[i]}
+    works.forEach((wk, index) => {
+      if (wk === 0) return
+      text += `5 - ${index + 1}. ${works[index]}
+${detail[index]}
+
 `
-      }
-    }
+    })
   }
   return text
 }
