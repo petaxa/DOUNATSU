@@ -1,9 +1,12 @@
 <script setup>
 import { defineProps } from 'vue'
 const props = defineProps({
-  text1: String,
-  text2: String
+  msg: String
 })
+
+const splitNum = props.msg.indexOf('4. [次回作業予定日]')
+const text1 = props.msg.split(0, splitNum - 1)
+const text2 = props.msg.split(splitNum)
 </script>
 
 <template>
@@ -14,8 +17,8 @@ const props = defineProps({
             </div>
             <h2 id="dialogTitle">日報</h2>
             <div id="dialogTexts">
-                <p v-html="props.text1"></p>
-                <p v-html="props.text2"></p>
+                <p>{{text1}}</p>
+                <p>{{text2}}</p>
             </div>
         </div>
     </div>

@@ -1,46 +1,58 @@
-<script setup>
+<script setup lang="ts">
 // 日報作成画面
 
 import { ref } from 'vue'
-import { result, works, projectTxt, workingDate, worksToText } from '../lib/createReportLib.js'
+import { result, works, workingDate, worksToText, worksObject } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
-import router from '../router/index.js'
+import router from '../router/index'
 
-// 日付のフォーマット関数
-const yyyymmdd = (date) => {
+/**
+ * 日付を表示用にフォーマット
+ * @param date フォーマットする日付のDate
+ * @retunr YYYY-MM-DD
+ */
+const yyyymmdd = (date: Date) => {
   // inputのデフォルト用
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 }
-const slashyyyymmdd = (date) => {
+
+/**
+ * 日付を本文用にフォーマット
+ * @param date フォーマットする日付 YYYY-MM-DDの形式
+ * @return YYYY/MM/DD
+ */
+const slashyyyymmdd = (date: string) => {
   return date.replace(/-/g, '/')
 }
 // デフォルト表示
-let now = new Date() // 現在年月日
-now = yyyymmdd(now)
-let tomorrow = new Date()
-tomorrow.setDate(tomorrow.getDate() + 1)// 翌日年月日
-tomorrow = yyyymmdd(tomorrow)
+// 現在年月日
+const nowDate = new Date()
+const now = yyyymmdd(nowDate)
+const tomorrowDate = new Date()
+// 翌日年月日
+tomorrowDate.setDate(tomorrowDate.getDate() + 1)
+const tomorrow = yyyymmdd(tomorrowDate)
 
 // 変数作成
 const todayDate = ref(now) // 作業年月日TODO: 日付のフォーマット関数
 const nextDate = ref(tomorrow) // 次回作業予定年月日TODO: 日付のフォーマット関数
 
+// 今回作業時間配列
 const todayTimeAry = ref([
   { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
-]) // 今回作業時間配列
+])
 
 const project = ref('') // 作業プロジェクト
 
+// 次回作業時間配列
 const nextTimeAry = ref([
   { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
-]) // 次回作業時間配列
+])
 const issueText = ref('') // 備考欄
 
 const msg = ref('') // 本文
-const message1 = ref('') // ダイアログ用本文
-const message2 = ref('') // ダイアログ用本文
 const isClose = ref(true) // ダイアログ非表示フラグ
 
 // 入力内容格納
@@ -59,43 +71,43 @@ const todayFormCountAry = ref([0, 1, 2, 3]) // 今回作業
 const nextFormCountAry = ref([0, 1, 2, 3]) // 次回作業予定
 
 // 作成ボタン押下処理
-const clickCreate = () => {
+const clickCreateBtn = () => {
   // 受け取った日付をDate型に
   const nowYYYYMMDD = slashyyyymmdd(todayDate.value) // 現在年月日フォーマット
   const nextYYYYMMDD = slashyyyymmdd(nextDate.value) // 翌日年月日フォーマット
   const DateStart = new Date(todayDate.value) // 作業日時のDate
   const DateNext = new Date(nextYYYYMMDD) // 次回作業予定日のDate
   // 文章作成
-  const todayWorkedTextAry = todayWorkedAry.map((el, i) => works(el, workTypeAry[i]))
-  const todayResultTextAry = todayResultAry
-  const nextWorkedTextAry = nextWorkedAry.map((el, i) => works(el, nextWorkTypeAry[i]))
+  const todayResultTextAry = result(todayResultAry)
+  const todayWorksTextAry: worksObject[] = todayWorkedAry.map((work, index) => {
+    return {
+      works: works(work, workTypeAry[index]),
+      result: todayResultTextAry[index],
+      detail: workDetailAry[index]
+    }
+  })
+  const nextWorksTextAry: worksObject[] = nextWorkedAry.map((work, index) => {
+    return {
+      works: works(work, nextWorkTypeAry[index]),
+      detail: NextworkDetailAry[index]
+    }
+  })
 
   // 文章格納
-  message1.value = `
-        1. [プロジェクト名]${projectTxt(project.value)}<br>
-        2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}<br>
-        3. [作業内容]<br>
-        ${worksToText(todayWorkedTextAry, result(todayResultTextAry), workDetailAry, 'today')}<br>`
-  message2.value = `4. [次回作業予定日]<br>
-        ${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}<br>
-        5. [次回作業予定]<br>
-        ${worksToText(nextWorkedTextAry, '', NextworkDetailAry, 'next')}<br>
-        [問題点]<br>
-        ${issueText.value}</p>`
   msg.value = `<P>ーーーーーーーーーーーーーーーーー
 【日報】
-1. [プロジェクト名]${projectTxt(project.value)}
+1. [プロジェクト名]${project.value ?? 'OPAL'}
 
 2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}
 
 3. [作業内容]
-${worksToText(todayWorkedTextAry, result(todayResultTextAry), workDetailAry, 'today')}
+${worksToText(todayWorksTextAry, true)}
 
 4. [次回作業予定日]
 ${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}
 
 5. [次回作業予定]
-${worksToText(nextWorkedTextAry, '', NextworkDetailAry, 'next')}
+${worksToText(nextWorksTextAry, false)}
 
 [問題点]
 ${issueText.value}</p>`
@@ -107,7 +119,8 @@ ${issueText.value}</p>`
   // コピー内容を選択する.
   const output = document.getElementById('output')
   setTimeout(async () => {
-    await navigator.clipboard.writeText(output.textContent)
+    // textContntからじゃないとコピーが上手くいかない。
+    await navigator.clipboard.writeText(output?.textContent ?? 'can not be copied')
     console.log('copied')
   }, 1000)
 }
@@ -193,7 +206,7 @@ const clickNextTimeMin = () => {
                         <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
                         <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
                     </div>
-                    <div v-for="i of todayTimeAry" :key="i">
+                    <div v-for="i of todayTimeAry" :key="i.startTime">
                         <input type="time" v-model="i.startTime" class="time" />
                         <input type="time" v-model="i.endTime" class="time" />
                     </div>
@@ -224,7 +237,7 @@ const clickNextTimeMin = () => {
                     <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
                     <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
                 </div>
-                <div v-for="i of nextTimeAry" :key="i">
+                <div v-for="i of nextTimeAry" :key="i.startTime">
                     <input type="time" v-model="i.startTime" class="time" />
                     <input type="time" v-model="i.endTime" class="time" />
                 </div>
@@ -250,14 +263,14 @@ const clickNextTimeMin = () => {
                     <textarea type="text" v-model="issueText" class="issue"></textarea>
                 </div>
                 <div>
-                    <button id="create" @click="clickCreate" class="finButton">作成</button>
+                    <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
                     <button @click="clickBack" class="finButton">戻る</button>
                 </div>
             </div>
         </div>
     </div>
     <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
-        <Dialog :text1="message1" :text2="message2"></Dialog>
+        <Dialog :msg="msg"></Dialog>
     </div>
     <p id="output" v-html="msg"></p>
 </template>
