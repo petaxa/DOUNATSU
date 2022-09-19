@@ -82,6 +82,3 @@ export const workingDate = (date: string, timeAry: {startTime: string, endTime: 
   }
   return `${date} (${weekStr[week]}) ${timeTxt}`
 }
-
-// test
-export const testMsg = () => console.log('teeeeeeeeeeeeeest')
