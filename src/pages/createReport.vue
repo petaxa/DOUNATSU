@@ -30,7 +30,7 @@ const nowDate = new Date()
 const now = yyyymmdd(nowDate)
 const tomorrowDate = new Date()
 // 翌日年月日
-tomorrowDate.setDate(tomorrowDate.getDate() + 1)
+tomorrowDate.setDate(nowDate.getDate() + 1)
 const tomorrow = yyyymmdd(tomorrowDate)
 
 // 変数作成
@@ -56,13 +56,13 @@ const msg = ref('') // 本文
 const isClose = ref(true) // ダイアログ非表示フラグ
 
 // 入力内容格納
-const todayWorkedAry = ['', '', '', '', ''] // 今回作業内容
-const todayResultAry = ['', '', '', '', ''] // 今回作業進捗
-const workTypeAry = ['UT', 'UT', 'UT', 'UT'] // 今回作業課題タイプ
-const workDetailAry = ['', '', '', '', ''] // 今回作業内容詳細
-const nextWorkedAry = ['', '', '', '', ''] // 次回作業内容
-const nextWorkTypeAry = ['UT', 'UT', 'UT', 'UT'] // 次回作業課題タイプ
-const NextworkDetailAry = ['', '', '', '', ''] // 次回作業内容詳細
+const todayWorkedAry = ref(['', '', '', '', '']) // 今回作業内容
+const todayResultAry = ref(['', '', '', '', '']) // 今回作業進捗
+const workTypeAry = ref(['UT', 'UT', 'UT', 'UT']) // 今回作業課題タイプ
+const workDetailAry = ref(['', '', '', '', '']) // 今回作業内容詳細
+const nextWorkedAry = ref(['', '', '', '', '']) // 次回作業内容
+const nextWorkTypeAry = ref(['UT', 'UT', 'UT', 'UT']) // 次回作業課題タイプ
+const NextworkDetailAry = ref(['', '', '', '', '']) // 次回作業内容詳細
 
 // 複数の入力項目をv-forで処理するときのindexとなる。
 let todayFormCount = 4 // 今回作業入力フォーム数
@@ -78,18 +78,18 @@ const clickCreateBtn = () => {
   const DateStart = new Date(todayDate.value) // 作業日時のDate
   const DateNext = new Date(nextYYYYMMDD) // 次回作業予定日のDate
   // 文章作成
-  const todayResultTextAry = result(todayResultAry)
-  const todayWorksTextAry: worksObject[] = todayWorkedAry.map((work, index) => {
+  const todayResultTextAry = result(todayResultAry.value)
+  const todayWorksTextAry: worksObject[] = todayWorkedAry.value.map((work, index) => {
     return {
-      works: works(work, workTypeAry[index]),
+      works: works(work, workTypeAry.value[index]),
       result: todayResultTextAry[index],
-      detail: workDetailAry[index]
+      detail: workDetailAry.value[index]
     }
   })
-  const nextWorksTextAry: worksObject[] = nextWorkedAry.map((work, index) => {
+  const nextWorksTextAry: worksObject[] = nextWorkedAry.value.map((work, index) => {
     return {
-      works: works(work, nextWorkTypeAry[index]),
-      detail: NextworkDetailAry[index]
+      works: works(work, nextWorkTypeAry.value[index]),
+      detail: NextworkDetailAry.value[index]
     }
   })
 
@@ -135,40 +135,78 @@ const clickBack = () => {
   router.push('/')
 }
 
+// クリアボタン押下処理
+const clickClear = () => {
+  // それぞれの入力欄を数は変えずに空にする
+  const clearInputs = [todayWorkedAry.value, todayResultAry.value, workDetailAry.value, nextWorkedAry.value, NextworkDetailAry.value]
+  clearInputs.forEach(ary => {
+    ary.forEach((w, index) => {
+      ary[index] = ''
+    })
+  })
+  // UTをセットする配列たち
+  const setUTArys = [nextWorkTypeAry.value, workTypeAry.value]
+  setUTArys.forEach(ary => {
+    ary.forEach((w, index) => {
+      ary[index] = 'UT'
+    })
+  })
+
+  // 備考欄をクリア
+  issueText.value = ''
+
+  // 日付を現在日時に変更
+  const nowDate = new Date()
+  const tomorrowDate = new Date()
+  tomorrowDate.setDate(nowDate.getDate() + 1)
+  todayDate.value = yyyymmdd(nowDate)
+  nextDate.value = yyyymmdd(tomorrowDate)
+
+  // 作業時間をクリア
+  todayTimeAry.value = [
+    { startTime: '11:00', endTime: '17:00' },
+    { startTime: '21:00', endTime: '23:00' }
+  ]
+  nextTimeAry.value = [
+    { startTime: '11:00', endTime: '17:00' },
+    { startTime: '21:00', endTime: '23:00' }
+  ]
+}
+
 // 作業内容入力フォーム増減処理
 // 今回増加
 const clickTodayPlus = () => {
   todayFormCountAry.value.push(todayFormCount)
-  todayWorkedAry.push('')
-  todayResultAry.push('')
-  workTypeAry.push('UT')
-  workDetailAry.push('')
+  todayWorkedAry.value.push('')
+  todayResultAry.value.push('')
+  workTypeAry.value.push('UT')
+  workDetailAry.value.push('')
   todayFormCount++
 }
 
 // 次回増加
 const clickNextPlus = () => {
   nextFormCountAry.value.push(nextFormCount)
-  nextWorkedAry.push('')
-  nextWorkTypeAry.push('UT')
+  nextWorkedAry.value.push('')
+  nextWorkTypeAry.value.push('UT')
   nextFormCount++
 }
 
 // 今回減少
 const clickTodayMin = () => {
   todayFormCountAry.value.pop()
-  todayWorkedAry.pop()
-  todayResultAry.pop()
-  workTypeAry.pop()
-  workDetailAry.pop()
+  todayWorkedAry.value.pop()
+  todayResultAry.value.pop()
+  workTypeAry.value.pop()
+  workDetailAry.value.pop()
   todayFormCount--
 }
 
 // 次回増加
 const clickNextMin = () => {
   nextFormCountAry.value.pop()
-  nextWorkedAry.pop()
-  nextWorkTypeAry.pop()
+  nextWorkedAry.value.pop()
+  nextWorkTypeAry.value.pop()
   nextFormCount--
 }
 
@@ -194,169 +232,170 @@ const clickNextTimeMin = () => {
 
 </script>
 <template>
-    <div id="createReport">
-        <div id="inputArea">
-            <div class="today">
-                <div id="workedDate">
-                    <div id="date-input">
-                        <input type="date" v-model="todayDate" class="date" />
-                        <input type="project" v-model="project" placeholder="OPAL" class="project" />
-                    </div>
-                    <div class="button">
-                        <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
-                        <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
-                    </div>
-                    <div v-for="i of todayTimeAry" :key="i.startTime">
-                        <input type="time" v-model="i.startTime" class="time" />
-                        <input type="time" v-model="i.endTime" class="time" />
-                    </div>
-                    <div class="button">
-                        <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
-                        <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
-                    </div>
-                </div>
-                <div id="workedList">
-                    <div class="form" v-for="item of todayFormCountAry" :key="item">
-                        <input type="text" v-model="todayWorkedAry[item]" class="work" />
-                        <input type="number" v-model="todayResultAry[item]" class="result" />
-                        <select name="workType" v-model="workTypeAry[item]" class="workType">
-                            <option value="UT">UT課題</option>
-                            <option value="none">none</option>
-                        </select>
-                        <textarea v-model="workDetailAry[item]" cols="30" rows="10"
-                            style="display: block; height:fit-content"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="next">
-                <div id="willDate">
-                    <input type="date" v-model="nextDate" class="date" />
-                </div>
-                <div class="button">
-                    <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
-                    <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
-                </div>
-                <div v-for="i of nextTimeAry" :key="i.startTime">
-                    <input type="time" v-model="i.startTime" class="time" />
-                    <input type="time" v-model="i.endTime" class="time" />
-                </div>
-                <div id="willList">
-                    <div>
-                        <button id="nextPlus" class="formButton" @click="clickNextPlus">+</button>
-                        <button id="nextMin" class="formButton" @click="clickNextMin">-</button>
-                    </div>
-                    <div id="nextForm-1" class="form" v-for="item of nextFormCountAry" :key="item">
-                        <input type="text" v-model="nextWorkedAry[item]" class="work" />
-                        <select name="workType" v-model="nextWorkTypeAry[item]" class="workType">
-                            <option value="UT">UT課題</option>
-                            <option value="none">none</option>
-                        </select>
-                        <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10"
-                            style="display: block; height:fit-content"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div id="endContents">
-                <div id="issue">
-                    <textarea type="text" v-model="issueText" class="issue"></textarea>
-                </div>
-                <div>
-                    <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
-                    <button @click="clickBack" class="finButton">戻る</button>
-                </div>
-            </div>
+  <div id="createReport">
+    <div id="inputArea">
+      <div class="today">
+        <div id="workedDate">
+          <div id="date-input">
+            <input type="date" v-model="todayDate" class="date" />
+            <input type="project" v-model="project" placeholder="OPAL" class="project" />
+          </div>
+          <div class="button">
+            <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
+            <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
+          </div>
+          <div v-for="i of todayTimeAry" :key="i.startTime">
+            <input type="time" v-model="i.startTime" class="time" />
+            <input type="time" v-model="i.endTime" class="time" />
+          </div>
+          <div class="button">
+            <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
+            <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
+          </div>
         </div>
+        <div id="workedList">
+          <div class="form" v-for="item of todayFormCountAry" :key="item">
+            <input type="text" v-model="todayWorkedAry[item]" class="work" />
+            <input type="number" v-model="todayResultAry[item]" class="result" />
+            <select name="workType" v-model="workTypeAry[item]" class="workType">
+              <option value="UT">UT課題</option>
+              <option value="none">none</option>
+            </select>
+            <textarea v-model="workDetailAry[item]" cols="30" rows="10"
+              style="display: block; height:fit-content"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="next">
+        <div id="willDate">
+          <input type="date" v-model="nextDate" class="date" />
+        </div>
+        <div class="button">
+          <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
+          <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
+        </div>
+        <div v-for="i of nextTimeAry" :key="i.startTime">
+          <input type="time" v-model="i.startTime" class="time" />
+          <input type="time" v-model="i.endTime" class="time" />
+        </div>
+        <div id="willList">
+          <div>
+            <button id="nextPlus" class="formButton" @click="clickNextPlus">+</button>
+            <button id="nextMin" class="formButton" @click="clickNextMin">-</button>
+          </div>
+          <div id="nextForm-1" class="form" v-for="item of nextFormCountAry" :key="item">
+            <input type="text" v-model="nextWorkedAry[item]" class="work" />
+            <select name="workType" v-model="nextWorkTypeAry[item]" class="workType">
+              <option value="UT">UT課題</option>
+              <option value="none">none</option>
+            </select>
+            <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10"
+              style="display: block; height:fit-content"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div id="endContents">
+        <div id="issue">
+          <textarea type="text" v-model="issueText" class="issue"></textarea>
+        </div>
+        <div>
+          <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
+          <button @click="clickBack" class="finButton">戻る</button>
+          <button @click="clickClear" class="finButton">クリア</button>
+        </div>
+      </div>
     </div>
-    <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
-        <Dialog :msg="msg"></Dialog>
-    </div>
-    <p id="output" v-html="msg"></p>
+  </div>
+  <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
+    <Dialog :msg="msg"></Dialog>
+  </div>
+  <p id="output" v-html="msg"></p>
 </template>
 <style>
 #dialogDisplay {
-    height: 50%;
-    width: 100%;
-    min-width: 450px;
+  height: 50%;
+  width: 100%;
+  min-width: 450px;
 }
 
 #output {
-    display: none;
+  display: none;
 }
 
 input,
 select,
 button,
 textarea {
-    border-radius: 5px;
-    border: 1px solid #74b1be;
-    color: white;
-    background-color: black;
-    height: 25px;
+  border-radius: 5px;
+  border: 1px solid #74b1be;
+  color: white;
+  background-color: black;
+  height: 25px;
 }
 
 .date {
-    /* 日付 */
-    width: 120px;
-    margin-right: 5px;
+  /* 日付 */
+  width: 120px;
+  margin-right: 5px;
 }
 
 .time {
-    /* 時間 */
-    width: 65px;
-    margin-right: 5px;
+  /* 時間 */
+  width: 65px;
+  margin-right: 5px;
 }
 
 .project {
-    /* プロジェクト名 */
-    width: 80px;
+  /* プロジェクト名 */
+  width: 80px;
 }
 
 .work {
-    /* 課題内容 */
-    width: 200px;
-    margin-right: 15px;
+  /* 課題内容 */
+  width: 200px;
+  margin-right: 15px;
 }
 
 .result {
-    /* 進捗 */
-    width: 60px;
-    margin-right: 10px;
+  /* 進捗 */
+  width: 60px;
+  margin-right: 10px;
 }
 
 .workType {
-    width: 70px;
+  width: 70px;
 }
 
 .finButton {
-    /* 作成、戻るボタン */
-    width: 60px;
-    margin: 20px;
+  /* 作成、戻るボタン */
+  width: 60px;
+  margin: 20px;
 }
 
 .formButton {
-    /* フォーム増減ボタン */
-    width: 40px;
-    margin: 10px;
+  /* フォーム増減ボタン */
+  width: 40px;
+  margin: 10px;
 }
 
 .issue {
-    width: 400px;
-    height: 60px;
-    margin-top: 10px;
+  width: 400px;
+  height: 60px;
+  margin-top: 10px;
 }
 
 .form {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 #inputArea {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 #createReport {
-    margin: 10px;
+  margin: 10px;
 }
 </style>
