@@ -4,9 +4,10 @@ const props = defineProps({
   msg: String
 })
 
-const splitNum = props.msg.indexOf('4. [次回作業予定日]')
-const text1 = props.msg.split(0, splitNum - 1)
-const text2 = props.msg.split(splitNum)
+const fullTexts = props.msg.replace('<p>', '').replace('</p>', '').replace('ーーーーーーーーーーーーーーーーー', '')
+  .split('\n')
+  .filter(msg => msg !== '')
+console.log(fullTexts)
 </script>
 
 <template>
@@ -16,9 +17,8 @@ const text2 = props.msg.split(splitNum)
                 <p>X</p>
             </div>
             <h2 id="dialogTitle">日報</h2>
-            <div id="dialogTexts">
-                <p>{{text1}}</p>
-                <p>{{text2}}</p>
+            <div v-for="text in fullTexts" :key="text" id="dialogTexts">
+                {{text}}
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@ const text2 = props.msg.split(splitNum)
 
 <style>
 #dialogOuter {
-    min-width: 450px;
+    min-width: 45em;
     border: 5px solid #74b1be;
     background-color: black;
     color: white;

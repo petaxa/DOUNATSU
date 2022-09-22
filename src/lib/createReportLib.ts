@@ -48,7 +48,7 @@ export const worksToText = (works: worksObject[], isTodaysWork: boolean): string
     works.forEach((wk, index) => {
       if (wk.works === '0') return
       text += `3 - ${index + 1}. ${wk.works}
-→${wk.result}
+${wk.result ? `→${wk.result}` : ''}
 ${wk.detail}
 
 `
@@ -81,4 +81,44 @@ export const workingDate = (date: string, timeAry: {startTime: string, endTime: 
     timeTxt += `${timeAry[i].startTime} ~ ${timeAry[i].endTime} `
   }
   return `${date} (${weekStr[week]}) ${timeTxt}`
+}
+
+// 本文成型
+
+export const createBodyStr = (
+  project: string,
+  nowYYYYMMDD: string,
+  todayTimeAry: { startTime: string, endTime: string}[],
+  todaysDate: number,
+  todayWorksTextAry: worksObject[],
+  nextYYYYMMDD: string,
+  nextTimeAry: { startTime: string, endTime: string}[],
+  nextDate: number,
+  nextWorksTextAry: worksObject[],
+  issueText: string
+) => {
+  return `ーーーーーーーーーーーーーーーーー
+  【日報】
+  1. [プロジェクト名]${project === '' ? 'OPAL' : project}
+  
+  2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry, todaysDate)}
+  
+  3. [作業内容]
+  ${worksToText(todayWorksTextAry, true)}
+  
+  4. [次回作業予定日]
+  ${workingDate(nextYYYYMMDD, nextTimeAry, nextDate)}
+  
+  5. [次回作業予定]
+  ${worksToText(nextWorksTextAry, false)}
+  
+  [問題点]
+  ${issueText}`
+}
+
+// 文字列省略
+export const omitStr = (str: string) => {
+  const omitNum = 30
+  if (str.length > omitNum) return `${str.substring(0, omitNum)}...`
+  return str
 }

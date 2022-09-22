@@ -2,7 +2,7 @@
 // 日報作成画面
 
 import { ref } from 'vue'
-import { result, works, workingDate, worksToText, worksObject } from '../lib/createReportLib'
+import { result, works, worksObject, createBodyStr, omitStr } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
 import router from '../router/index'
 
@@ -53,6 +53,7 @@ const nextTimeAry = ref([
 const issueText = ref('') // 備考欄
 
 const msg = ref('') // 本文
+const DialogMsg = ref('') // ダイアログ表示用本文
 const isClose = ref(true) // ダイアログ非表示フラグ
 
 // 入力内容格納
@@ -94,24 +95,46 @@ const clickCreateBtn = () => {
   })
 
   // 文章格納
-  msg.value = `<P>ーーーーーーーーーーーーーーーーー
-【日報】
-1. [プロジェクト名]${project.value ?? 'OPAL'}
-
-2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry.value, DateStart.getDay())}
-
-3. [作業内容]
-${worksToText(todayWorksTextAry, true)}
-
-4. [次回作業予定日]
-${workingDate(nextYYYYMMDD, nextTimeAry.value, DateNext.getDay())}
-
-5. [次回作業予定]
-${worksToText(nextWorksTextAry, false)}
-
-[問題点]
-${issueText.value}</p>`
+  msg.value = createBodyStr(
+    project.value,
+    nowYYYYMMDD,
+    todayTimeAry.value,
+    DateStart.getDay(),
+    todayWorksTextAry,
+    nextYYYYMMDD,
+    nextTimeAry.value,
+    DateNext.getDay(),
+    nextWorksTextAry,
+    issueText.value
+  )
   console.log(msg.value)
+
+  DialogMsg.value = createBodyStr(
+    project.value,
+    nowYYYYMMDD,
+    todayTimeAry.value,
+    DateStart.getDay(),
+    todayWorksTextAry.map(work => {
+      const msg = omitStr(work.detail)
+      return {
+        works: work.works,
+        result: work.result,
+        detail: msg
+      }
+    }),
+    nextYYYYMMDD,
+    nextTimeAry.value,
+    DateNext.getDay(),
+    nextWorksTextAry.map(work => {
+      const msg = omitStr(work.detail)
+      return {
+        works: work.works,
+        result: work.result,
+        detail: msg
+      }
+    }),
+    issueText.value
+  )
 
   // dialog表示
   isClose.value = false
@@ -309,7 +332,7 @@ const clickNextTimeMin = () => {
     </div>
   </div>
   <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
-    <Dialog :msg="msg"></Dialog>
+    <Dialog :msg="DialogMsg"></Dialog>
   </div>
   <p id="output" v-html="msg"></p>
 </template>
