@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import mainPage from '../pages/mainPage.vue'
 import createReport from '../pages/createReport.vue'
 import preparation from '../pages/preparation.vue'
+import startChat from '../pages/startChat.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/preparation',
     name: 'preparation',
     component: preparation
+  },
+  {
+    path: '/startChat',
+    name: 'startChat',
+    component: startChat
   }
 ]
 

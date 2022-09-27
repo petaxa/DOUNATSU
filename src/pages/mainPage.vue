@@ -12,6 +12,11 @@ const goPreparation = () => {
   router.push('/preparation')
 }
 
+// 作業内容作成画面へ移動
+const goStartChat = () => {
+  router.push('/startChat')
+}
+
 // メニューのホバー処理
 const isMenuBtn = ref(false) // メニューボタン表示フラグ
 const onContent = () => {
@@ -45,19 +50,25 @@ const leaveContent = () => {
   </div>
   <div id="below">
     <div id="below-left">
+      <button @click="goStartChat()" class="below-content button-content">
+        <img src="../assets/logo.png">
+        <p class="text">作業開始文言作成</p>
+      </button>
       <button @click="goPreparation()" class="below-content button-content">
         <img src="../assets/logo.png">
         <p class="text">課題登録/完了</p>
       </button>
-      <button @click="goPreparation()" id="kadaiSearch" class="below-content button-content">
+    </div>
+    <div id="below-right">
+      <button @click="goPreparation()" class="below-content button-content">
+        <img src="../assets/logo.png">
+        <p class="text">課題一覧</p>
+      </button>
+      <button @click="goPreparation()" class="below-content button-content">
         <img src="../assets/logo.png">
         <p class="text">課題検索</p>
       </button>
     </div>
-    <button @click="goPreparation()" id="below-right" class="below-content button-content">
-      <img src="../assets/logo.png">
-      <p class="text">課題一覧</p>
-    </button>
   </div>
 </template>
 <style>
@@ -118,15 +129,12 @@ const leaveContent = () => {
   min-width: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   margin: 0 40px 0 10px;
 }
 
 .below-content {
   height: 110px;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -137,6 +145,7 @@ const leaveContent = () => {
 }
 
 .button-content {
+  /* width: 40%; */
   border-radius: 15px;
   border: medium solid #74b1be;
   display: inline-block;
