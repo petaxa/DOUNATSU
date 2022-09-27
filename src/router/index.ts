@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import mainPage from '../pages/mainPage.vue'
 import createReport from '../pages/createReport.vue'
 import preparation from '../pages/preparation.vue'
@@ -21,8 +21,9 @@ const routes = [
   }
 ]
 
+// ビルドしたときはcreateWebHashHistoryじゃないと動かないらしい
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
 
