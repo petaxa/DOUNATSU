@@ -267,7 +267,7 @@ const clickNextTimeMin = () => {
             <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
             <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
           </div>
-          <div v-for="i of todayTimeAry" :key="i.startTime">
+          <div v-for="(i, index) of todayTimeAry" :key="index">
             <input type="time" v-model="i.startTime" class="time" />
             <input type="time" v-model="i.endTime" class="time" />
           </div>
