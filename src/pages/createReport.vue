@@ -258,70 +258,71 @@ const clickNextTimeMin = () => {
   <div id="createReport">
     <div id="inputArea">
       <div class="today">
+        <p>1.プロジェクト名 <input type="project" v-model="project" placeholder="OPAL" class="project" /></p>
         <div id="workedDate">
-          <div id="date-input">
-            <input type="date" v-model="todayDate" class="date" />
-            <input type="project" v-model="project" placeholder="OPAL" class="project" />
-          </div>
           <div class="button">
+            <span>2.作業日</span>
             <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
             <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
           </div>
+          <input type="date" v-model="todayDate" class="date" />
           <div v-for="(i, index) of todayTimeAry" :key="index">
             <input type="time" v-model="i.startTime" class="time" />
             <input type="time" v-model="i.endTime" class="time" />
           </div>
           <div class="button">
+            <span>3.作業内容</span>
             <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
             <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
           </div>
         </div>
         <div id="workedList">
-          <div class="form" v-for="item of todayFormCountAry" :key="item">
-            <input type="text" v-model="todayWorkedAry[item]" class="work" />
+          <div class="form" v-for="(item, index) of todayFormCountAry" :key="index">
+            <span>{{`3-${index + 1}.`}}<input type="text" v-model="todayWorkedAry[item]" class="work" /></span>
             <input type="number" v-model="todayResultAry[item]" class="result" />
             <select name="workType" v-model="workTypeAry[item]" class="workType">
               <option value="UT">UT課題</option>
               <option value="none">none</option>
             </select>
             <textarea v-model="workDetailAry[item]" cols="30" rows="10"
-              style="display: block; height:fit-content"></textarea>
+              style="display: block; height:fit-content; width:100%;"></textarea>
           </div>
         </div>
       </div>
 
       <div class="next">
-        <div id="willDate">
-          <input type="date" v-model="nextDate" class="date" />
-        </div>
         <div class="button">
+          <span>4.次回作業予定日</span>
           <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
           <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
         </div>
-        <div v-for="i of nextTimeAry" :key="i.startTime">
+        <input type="date" v-model="nextDate" class="date" />
+        <div v-for="(i, index) of nextTimeAry" :key="index">
           <input type="time" v-model="i.startTime" class="time" />
           <input type="time" v-model="i.endTime" class="time" />
         </div>
         <div id="willList">
           <div>
+            <span>5.次回作業予定</span>
             <button id="nextPlus" class="formButton" @click="clickNextPlus">+</button>
             <button id="nextMin" class="formButton" @click="clickNextMin">-</button>
           </div>
-          <div id="nextForm-1" class="form" v-for="item of nextFormCountAry" :key="item">
-            <input type="text" v-model="nextWorkedAry[item]" class="work" />
+          <div class="form" v-for="(item, index) of nextFormCountAry" :key="index">
+            <span>{{`5-${index + 1}. `}}<input type="text" v-model="nextWorkedAry[item]" class="work" /></span>
             <select name="workType" v-model="nextWorkTypeAry[item]" class="workType">
               <option value="UT">UT課題</option>
               <option value="none">none</option>
             </select>
             <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10"
-              style="display: block; height:fit-content"></textarea>
+              style="display: block; height:fit-content; width:100%;"></textarea>
           </div>
         </div>
       </div>
 
       <div id="endContents">
         <div id="issue">
-          <textarea type="text" v-model="issueText" class="issue"></textarea>
+          <textarea type="text" v-model="issueText" class="issue"
+            style="height:250px;"></textarea>
         </div>
         <div>
           <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
@@ -410,7 +411,7 @@ textarea {
 }
 
 .form {
-  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 #inputArea {
@@ -420,5 +421,12 @@ textarea {
 
 #createReport {
   margin: 10px;
+}
+
+.next {
+  margin-top: 25px;
+}
+#endContents {
+  text-align: center;
 }
 </style>

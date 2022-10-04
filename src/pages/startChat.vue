@@ -74,26 +74,34 @@ const clickClear = () => {
 </script>
 
 <template>
-  <div class="button">
-    <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
-    <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
-  </div>
-  <div v-for="(i, index) of workTimeAry" :key="index">
-    <input type="time" v-model="i.startTime" class="time" />
-    <input type="time" v-model="i.endTime" class="time" />
-  </div>
-  <div class="button">
-    <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
-    <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
-  </div>
-  <div class="form" v-for="(item, index) of willWorkAry" :key="index">
-    <input type="text" v-model="willWorkAry[index]" class="work" />
-  </div>
+  <div id="startChat">
+    <div class="button">
+      <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
+      <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
+    </div>
+    <div v-for="(i, index) of workTimeAry" :key="index">
+      <input type="time" v-model="i.startTime" class="time" />
+      <input type="time" v-model="i.endTime" class="time" />
+    </div>
+    <div class="button">
+      <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
+      <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
+    </div>
+    <div class="form" v-for="(item, index) of willWorkAry" :key="index">
+      <input type="text" v-model="willWorkAry[index]" class="work" />
+    </div>
 
-  <div>
-    <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
-    <button @click="clickBack" class="finButton">戻る</button>
-    <button @click="clickClear" class="finButton">クリア</button>
+    <div>
+      <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
+      <button @click="clickBack" class="finButton">戻る</button>
+      <button @click="clickClear" class="finButton">クリア</button>
+    </div>
+    <p id="output">{{msg}}</p>
   </div>
-  <p id="output">{{msg}}</p>
 </template>
+
+<style>
+  #startChat {
+    text-align: center;
+  }
+</style>
