@@ -81,33 +81,62 @@ const clickClear = () => {
 
 <template>
   <div id="startChat">
-    <div class="button">
-      <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
-      <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
+    <div style="display:flex;">
+      <p class="page-title">作業開始文言作成</p>
+      <div class="back-button startChat-backBtn">
+        <button @click="clickBack" class="close icon"></button>
+      </div>
     </div>
-    <div v-for="(i, index) of workTimeAry" :key="index">
-      <input type="time" v-model="i.startTime" class="time" />
-      <input type="time" v-model="i.endTime" class="time" />
+    <div class="line-parent">
+      <div class="line"></div>
     </div>
-    <div class="button">
-      <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
-      <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
-    </div>
-    <div class="form" v-for="(item, index) of willWorkAry" :key="index">
-      <input type="text" v-model="willWorkAry[index]" class="work" />
-    </div>
+    <div id="main-input">
+      <div class="button">
+        <span>作業予定時間</span>
+        <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
+        <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
+      </div>
+      <div v-for="(i, index) of workTimeAry" :key="index">
+        <input type="time" v-model="i.startTime" class="time" />
+        <input type="time" v-model="i.endTime" class="time" />
+      </div>
+      <div class="button">
+        <span>作業予定内容</span>
+        <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
+        <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
+      </div>
+      <div class="form" v-for="(item, index) of willWorkAry" :key="index">
+        <input type="text" v-model="willWorkAry[index]" class="work" />
+      </div>
 
-    <div>
-      <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
-      <button @click="clickBack" class="finButton">戻る</button>
-      <button @click="clickClear" class="finButton">クリア</button>
+      <div>
+        <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
+        <button @click="clickClear" class="finButton">クリア</button>
+      </div>
     </div>
-    <p id="output">{{msg}}</p>
+    <p id="output">{{ msg }}</p>
   </div>
 </template>
 
 <style>
-  #startChat {
-    text-align: center;
-  }
+#startChat {
+  margin: 140px 0px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 35vw;
+}
+
+.page-title {
+  font-size: 35px;
+}
+
+#main-input {
+  width: 25em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.startChat-backBtn {
+  width: 100px;
+}
 </style>

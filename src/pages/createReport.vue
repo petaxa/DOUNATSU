@@ -60,19 +60,19 @@ const isClose = ref(true) // ダイアログ非表示フラグ
 // 入力内容格納
 // localStorageの業務開始内容を初期値とする
 const willWorkAry = getWorkedAry('willWorkAry')
-const todayWorkedAry = willWorkAry ? ref(willWorkAry) : ref(['', '', '', '', '']) // 今回作業内容
-const todayResultAry = ref(['', '', '', '', '']) // 今回作業進捗
+const todayWorkedAry = willWorkAry ? ref(willWorkAry) : ref(['', '', '', '']) // 今回作業内容
+const todayResultAry = ref(['', '', '', '']) // 今回作業進捗
 const workTypeAry = ref(['none', 'none', 'none', 'none']) // 今回作業課題タイプ
-const workDetailAry = ref(['', '', '', '', '']) // 今回作業内容詳細
-const nextWorkedAry = ref(['', '', '', '', '']) // 次回作業内容
+const workDetailAry = ref(['', '', '', '']) // 今回作業内容詳細
+const nextWorkedAry = ref(['', '', '', '']) // 次回作業内容
 const nextWorkTypeAry = ref(['none', 'none', 'none', 'none']) // 次回作業課題タイプ
-const NextworkDetailAry = ref(['', '', '', '', '']) // 次回作業内容詳細
+const NextworkDetailAry = ref(['', '', '', '']) // 次回作業内容詳細
 
 // 複数の入力項目をv-forで処理するときのindexとなる。
-let todayFormCount = 5 // 今回作業入力フォーム数
-let nextFormCount = 5 // 次回作業入力フォーム数
-const todayFormCountAry = ref([0, 1, 2, 3, 4]) // 今回作業
-const nextFormCountAry = ref([0, 1, 2, 3, 4]) // 次回作業予定
+let todayFormCount = 4 // 今回作業入力フォーム数
+let nextFormCount = 4 // 次回作業入力フォーム数
+const todayFormCountAry = ref([0, 1, 2, 3]) // 今回作業
+const nextFormCountAry = ref([0, 1, 2, 3]) // 次回作業予定
 
 // 作成ボタン押下処理
 const clickCreateBtn = () => {
@@ -266,6 +266,10 @@ const clickNextTimeMin = () => {
 </script>
 <template>
   <div id="createReport">
+    <div style="height:3px"></div>
+    <div class="back-button">
+      <button @click="clickBack" class="close icon"></button>
+    </div>
     <div id="inputArea">
       <div class="today">
         <p>1.プロジェクト名 <input type="project" v-model="project" placeholder="OPAL" class="project" /></p>
@@ -277,8 +281,11 @@ const clickNextTimeMin = () => {
           </div>
           <input type="date" v-model="todayDate" class="date" />
           <div v-for="(i, index) of todayTimeAry" :key="index">
-            <input type="time" v-model="i.startTime" class="time" />
-            <input type="time" v-model="i.endTime" class="time" />
+            <p>
+              <input type="time" v-model="i.startTime" class="time" />
+              <span> ~ </span>
+              <input type="time" v-model="i.endTime" class="time" />
+            </p>
           </div>
           <div class="button">
             <span>3.作業内容</span>
@@ -308,8 +315,11 @@ const clickNextTimeMin = () => {
         </div>
         <input type="date" v-model="nextDate" class="date" />
         <div v-for="(i, index) of nextTimeAry" :key="index">
-          <input type="time" v-model="i.startTime" class="time" />
-          <input type="time" v-model="i.endTime" class="time" />
+          <p>
+            <input type="time" v-model="i.startTime" class="time" />
+            <span> ~ </span>
+            <input type="time" v-model="i.endTime" class="time" />
+          </p>
         </div>
         <div id="willList">
           <div>
@@ -335,7 +345,6 @@ const clickNextTimeMin = () => {
         </div>
         <div>
           <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
-          <button @click="clickBack" class="finButton">戻る</button>
           <button @click="clickClear" class="finButton">クリア</button>
         </div>
       </div>
@@ -377,7 +386,6 @@ textarea {
 .time {
   /* 時間 */
   width: 65px;
-  margin-right: 5px;
 }
 
 .project {
@@ -429,7 +437,7 @@ textarea {
 }
 
 #createReport {
-  margin: 10px;
+  margin: 10px 40px;
 }
 
 .next {
@@ -438,5 +446,11 @@ textarea {
 
 #endContents {
   text-align: center;
+}
+
+.back-button {
+  height: 40px;
+  display: flex;
+  flex-direction: row-reverse;
 }
 </style>
