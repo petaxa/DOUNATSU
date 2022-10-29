@@ -5,6 +5,7 @@ import { ref } from 'vue'
 import { result, works, worksObject, createBodyStr, omitStr } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
 import router from '../router/index'
+import { getWorkedAry, setLocalStorage } from '@/lib/localStorage'
 
 /**
  * 日付を表示用にフォーマット
@@ -57,19 +58,21 @@ const DialogMsg = ref('') // ダイアログ表示用本文
 const isClose = ref(true) // ダイアログ非表示フラグ
 
 // 入力内容格納
-const todayWorkedAry = ref(['', '', '', '', '']) // 今回作業内容
+// localStorageの業務開始内容を初期値とする
+const willWorkAry = getWorkedAry('willWorkAry')
+const todayWorkedAry = willWorkAry ? ref(willWorkAry) : ref(['', '', '', '', '']) // 今回作業内容
 const todayResultAry = ref(['', '', '', '', '']) // 今回作業進捗
-const workTypeAry = ref(['UT', 'UT', 'UT', 'UT']) // 今回作業課題タイプ
+const workTypeAry = ref(['none', 'none', 'none', 'none']) // 今回作業課題タイプ
 const workDetailAry = ref(['', '', '', '', '']) // 今回作業内容詳細
 const nextWorkedAry = ref(['', '', '', '', '']) // 次回作業内容
-const nextWorkTypeAry = ref(['UT', 'UT', 'UT', 'UT']) // 次回作業課題タイプ
+const nextWorkTypeAry = ref(['none', 'none', 'none', 'none']) // 次回作業課題タイプ
 const NextworkDetailAry = ref(['', '', '', '', '']) // 次回作業内容詳細
 
 // 複数の入力項目をv-forで処理するときのindexとなる。
-let todayFormCount = 4 // 今回作業入力フォーム数
-let nextFormCount = 4 // 次回作業入力フォーム数
-const todayFormCountAry = ref([0, 1, 2, 3]) // 今回作業
-const nextFormCountAry = ref([0, 1, 2, 3]) // 次回作業予定
+let todayFormCount = 5 // 今回作業入力フォーム数
+let nextFormCount = 5 // 次回作業入力フォーム数
+const todayFormCountAry = ref([0, 1, 2, 3, 4]) // 今回作業
+const nextFormCountAry = ref([0, 1, 2, 3, 4]) // 次回作業予定
 
 // 作成ボタン押下処理
 const clickCreateBtn = () => {
@@ -78,18 +81,22 @@ const clickCreateBtn = () => {
   const nextYYYYMMDD = slashyyyymmdd(nextDate.value) // 翌日年月日フォーマット
   const DateStart = new Date(todayDate.value) // 作業日時のDate
   const DateNext = new Date(nextYYYYMMDD) // 次回作業予定日のDate
+
+  // localStorageの業務開始文言作成時の作業内容を初期値とする
+  setLocalStorage('nextWorkedAry', nextWorkedAry.value.filter(v => v !== ''))
+
   // 文章作成
   const todayResultTextAry = result(todayResultAry.value)
-  const todayWorksTextAry: worksObject[] = todayWorkedAry.value.map((work, index) => {
+  const todayWorksTextAry: worksObject[] = todayFormCountAry.value.map((v, index) => {
     return {
-      works: works(work, workTypeAry.value[index]),
+      works: works(todayWorkedAry.value[index], workTypeAry.value[index]),
       result: todayResultTextAry[index],
       detail: workDetailAry.value[index]
     }
   })
-  const nextWorksTextAry: worksObject[] = nextWorkedAry.value.map((work, index) => {
+  const nextWorksTextAry: worksObject[] = nextFormCountAry.value.map((v, index) => {
     return {
-      works: works(work, nextWorkTypeAry.value[index]),
+      works: works(nextWorkedAry.value[index], nextWorkTypeAry.value[index]),
       detail: NextworkDetailAry.value[index]
     }
   })
@@ -109,6 +116,7 @@ const clickCreateBtn = () => {
   )
   console.log(msg.value)
 
+  console.log(todayWorksTextAry)
   DialogMsg.value = createBodyStr(
     project.value,
     nowYYYYMMDD,
@@ -202,7 +210,7 @@ const clickTodayPlus = () => {
   todayFormCountAry.value.push(todayFormCount)
   todayWorkedAry.value.push('')
   todayResultAry.value.push('')
-  workTypeAry.value.push('UT')
+  workTypeAry.value.push('none')
   workDetailAry.value.push('')
   todayFormCount++
 }
@@ -211,7 +219,8 @@ const clickTodayPlus = () => {
 const clickNextPlus = () => {
   nextFormCountAry.value.push(nextFormCount)
   nextWorkedAry.value.push('')
-  nextWorkTypeAry.value.push('UT')
+  nextWorkTypeAry.value.push('none')
+  NextworkDetailAry.value.push('')
   nextFormCount++
 }
 
@@ -230,6 +239,7 @@ const clickNextMin = () => {
   nextFormCountAry.value.pop()
   nextWorkedAry.value.pop()
   nextWorkTypeAry.value.pop()
+  NextworkDetailAry.value.pop()
   nextFormCount--
 }
 
@@ -278,7 +288,7 @@ const clickNextTimeMin = () => {
         </div>
         <div id="workedList">
           <div class="form" v-for="(item, index) of todayFormCountAry" :key="index">
-            <span>{{`3-${index + 1}.`}}<input type="text" v-model="todayWorkedAry[item]" class="work" /></span>
+            <span>{{ `3-${index + 1}.` }}<input type="text" v-model="todayWorkedAry[item]" class="work" /></span>
             <input type="number" v-model="todayResultAry[item]" class="result" />
             <select name="workType" v-model="workTypeAry[item]" class="workType">
               <option value="UT">UT課題</option>
@@ -308,7 +318,7 @@ const clickNextTimeMin = () => {
             <button id="nextMin" class="formButton" @click="clickNextMin">-</button>
           </div>
           <div class="form" v-for="(item, index) of nextFormCountAry" :key="index">
-            <span>{{`5-${index + 1}. `}}<input type="text" v-model="nextWorkedAry[item]" class="work" /></span>
+            <span>{{ `5-${index + 1}. ` }}<input type="text" v-model="nextWorkedAry[item]" class="work" /></span>
             <select name="workType" v-model="nextWorkTypeAry[item]" class="workType">
               <option value="UT">UT課題</option>
               <option value="none">none</option>
@@ -321,8 +331,7 @@ const clickNextTimeMin = () => {
 
       <div id="endContents">
         <div id="issue">
-          <textarea type="text" v-model="issueText" class="issue"
-            style="height:250px;"></textarea>
+          <textarea type="text" v-model="issueText" class="issue" style="height:250px;"></textarea>
         </div>
         <div>
           <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
@@ -426,6 +435,7 @@ textarea {
 .next {
   margin-top: 25px;
 }
+
 #endContents {
   text-align: center;
 }

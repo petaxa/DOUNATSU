@@ -118,6 +118,7 @@ export const createBodyStr = (
 
 // 文字列省略
 export const omitStr = (str: string) => {
+  console.log(typeof str)
   const omitNum = 30
   if (str.length > omitNum) return `${str.substring(0, omitNum)}...`
   return str
