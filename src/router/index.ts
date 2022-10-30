@@ -3,6 +3,7 @@ import mainPage from '../pages/mainPage.vue'
 import createReport from '../pages/createReport.vue'
 import preparation from '../pages/preparation.vue'
 import startChat from '../pages/startChat.vue'
+import setting from '../pages/setting.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/startChat',
     name: 'startChat',
     component: startChat
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: setting
   }
 ]
 
