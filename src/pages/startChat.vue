@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getWorkedAry, setLocalStorage } from '@/lib/localStorage'
+import { getWorkedAry, setWorkedAry } from '@/lib/localStorage'
 import router from '@/router'
 import { ref } from 'vue'
 
@@ -43,7 +43,7 @@ const msg = ref('')
 const clickCreateBtn = () => {
   msg.value = `本日の業務開始します。\n${createTimesMsg()}で作業予定です\n【作業予定】\n${willWorkAry.value.join('\n')}`
   // localStorageに保存
-  setLocalStorage('willWorkAry', willWorkAry.value)
+  setWorkedAry('willWorkAry', willWorkAry.value)
   // クリップボードにコピー
   // コピー内容を選択する.
   const output = document.getElementById('output')

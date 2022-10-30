@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { result, works, worksObject, createBodyStr, omitStr } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
 import router from '../router/index'
-import { getWorkedAry, setLocalStorage } from '@/lib/localStorage'
+import { getWorkedAry, setWorkedAry } from '@/lib/localStorage'
 
 /**
  * 日付を表示用にフォーマット
@@ -83,7 +83,7 @@ const clickCreateBtn = () => {
   const DateNext = new Date(nextYYYYMMDD) // 次回作業予定日のDate
 
   // localStorageの業務開始文言作成時の作業内容を初期値とする
-  setLocalStorage('nextWorkedAry', nextWorkedAry.value.filter(v => v !== ''))
+  setWorkedAry('nextWorkedAry', nextWorkedAry.value.filter(v => v !== ''))
 
   // 文章作成
   const todayResultTextAry = result(todayResultAry.value)

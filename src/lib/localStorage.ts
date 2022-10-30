@@ -20,14 +20,29 @@ export const getWorkedAry = (key: workedAryKeys): string[]|null => {
   return storageData ? JSON.parse(storageData) : null
 }
 
+/**
+ * 設定に関するデータをlocalStorageに保存
+ * @param key 型に登録した文字列 isAutocomplete: 作業内容自動入力, isLight: ライトテーマ, inputNum: 作業内容デフォルト個数
+ * @param setData セットする値
+ */
 export const setSetting = (key: settingKeys, setData: boolean | number) => {
   localStorage.setItem(key, String(setData))
 }
 
+// string → booleanの変換関数
+const toBoolean = (boolStr: string) => {
+  return boolStr.toLowerCase() === 'true'
+}
+
+/**
+ * 設定に関するデータをlocalStorageから取得
+ * @param key 型に登録した文字列 isAutocomplete: 作業内容自動入力, isLight: ライトテーマ, inputNum: 作業内容デフォルト個数
+ * @return データがない場合、型ごとに初期値が返るようになっている
+ */
 export const getSetting = (key: settingKeys) => {
   const data = localStorage.getItem(key)
   if (key === 'isAutocomplete' || key === 'isLight') {
-    return data ? Boolean(data) : false
+    return data !== null ? toBoolean(data) : false
   } else if (key === 'inputNum') {
     return data ? Number(data) : 0
   }

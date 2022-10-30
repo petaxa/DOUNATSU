@@ -8,9 +8,12 @@ const clickBack = () => {
   router.push('/')
 }
 
-const isAutocomplete = getSetting('isAutocomplete') ? ref(true) : ref(false)
-const isLight = getSetting('isLight') ? ref(true) : ref(false)
+// 設定
+const isAutocomplete = getSetting('isAutocomplete') ? ref(true) : ref(false) // null回避
+const isLight = getSetting('isLight') ? ref(true) : ref(false) // null回避
 const inputNum = ref(getSetting('inputNum'))
+
+// 設定が変更されたらlocalStorageを更新
 watch([isAutocomplete, isLight, inputNum], () => {
   if (isAutocomplete.value === undefined || isLight.value === undefined || inputNum.value === undefined) return
   setSetting('isAutocomplete', isAutocomplete.value)
