@@ -175,9 +175,9 @@ const clickClear = () => {
       ary[index] = ''
     })
   })
-  // UTをセットする配列たち
-  const setUTArys = [nextWorkTypeAry.value, workTypeAry.value]
-  setUTArys.forEach(ary => {
+  // 課題タイプのセット
+  const setWorkTypeArys = [nextWorkTypeAry.value, workTypeAry.value]
+  setWorkTypeArys.forEach(ary => {
     ary.forEach((w, index) => {
       ary[index] = 'none'
     })
