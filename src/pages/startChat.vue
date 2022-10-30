@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getWorkedAry, setWorkedAry } from '@/lib/localStorage'
+import { getSetting, getWorkedAry, setWorkedAry } from '@/lib/localStorage'
 import router from '@/router'
 import { ref } from 'vue'
 
@@ -18,7 +18,9 @@ const workTimeAry = ref([
 
 // localStorageの次回作業内容を初期値とする
 const nextWorkedAry = getWorkedAry('nextWorkedAry')
-const willWorkAry = nextWorkedAry ? ref(nextWorkedAry) : ref(['', ''])
+// 作業内容自動入力設定取得
+const isAutocomplete = !!getSetting('isAutocomplete') // null回避
+const willWorkAry = nextWorkedAry && isAutocomplete ? ref(nextWorkedAry) : ref(['', ''])
 
 // 今回増加
 const clickTodayPlus = () => {
@@ -76,6 +78,8 @@ const clickClear = () => {
     { startTime: '11:00', endTime: '17:00' },
     { startTime: '21:00', endTime: '23:00' }
   ]
+  // localStorageのwillWorkAryをクリア
+  setWorkedAry('nextWorkedAry', ['', ''])
 }
 </script>
 
@@ -137,6 +141,7 @@ const clickClear = () => {
   flex-direction: column;
   align-items: left;
 }
+
 .startChat-backBtn {
   width: 100px;
 }

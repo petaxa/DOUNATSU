@@ -84,7 +84,21 @@ export const workingDate = (date: string, timeAry: {startTime: string, endTime: 
 }
 
 // 本文成型
-
+/**
+ * 本文成型
+ * テンプレートに与えられた情報を格納する
+ * @param project プロジェクト名
+ * @param nowYYYYMMDD 今回作業年月日
+ * @param todayTimeAry 今回作業時間オブジェクト {開始時間, 終了時間}
+ * @param todaysDate 今回作業日の曜日 Date.getDay()の数字
+ * @param todayWorksTextAry 今回作業データ配列 [{作業内容, 作業進捗, 作業詳細}, {}...]
+ * @param nextYYYYMMDD 次回作業予定年月日
+ * @param nextTimeAry 次回作業予定時間オブジェクト {開始時間, 終了時間}
+ * @param nextDate 次回作業予定日の曜日 Date.getDay()の数字
+ * @param nextWorksTextAry 次回作業データ配列 [{作業内容, 作業詳細}, {}...]
+ * @param issueText 問題点
+ * @returns 成型済み本文
+ */
 export const createBodyStr = (
   project: string,
   nowYYYYMMDD: string,
@@ -116,7 +130,12 @@ export const createBodyStr = (
   ${issueText}`
 }
 
-// 文字列省略
+/**
+ * 文字列省略処理
+ * ${omitNum}文字以降は"..."に省略
+ * @param str 省略処理文字列
+ * @returns 処理済み文字列
+ */
 export const omitStr = (str: string) => {
   console.log(typeof str)
   const omitNum = 30

@@ -5,8 +5,9 @@ import { ref } from 'vue'
 import { result, works, worksObject, createBodyStr, omitStr } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
 import router from '../router/index'
-import { getWorkedAry, setWorkedAry } from '@/lib/localStorage'
+import { getSetting, getWorkedAry, setWorkedAry } from '@/lib/localStorage'
 
+// フォーマット関数
 /**
  * 日付を表示用にフォーマット
  * @param date フォーマットする日付のDate
@@ -16,7 +17,6 @@ const yyyymmdd = (date: Date) => {
   // inputのデフォルト用
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 }
-
 /**
  * 日付を本文用にフォーマット
  * @param date フォーマットする日付 YYYY-MM-DDの形式
@@ -25,56 +25,88 @@ const yyyymmdd = (date: Date) => {
 const slashyyyymmdd = (date: string) => {
   return date.replace(/-/g, '/')
 }
-// デフォルト表示
-// 現在年月日
+
+// 現在年月日 Date
 const nowDate = new Date()
-const now = yyyymmdd(nowDate)
 const tomorrowDate = new Date()
-// 翌日年月日
+// 翌日年月日 Date
 tomorrowDate.setDate(nowDate.getDate() + 1)
-const tomorrow = yyyymmdd(tomorrowDate)
 
-// 変数作成
-const todayDate = ref(now) // 作業年月日TODO: 日付のフォーマット関数
-const nextDate = ref(tomorrow) // 次回作業予定年月日TODO: 日付のフォーマット関数
+/** 現在年月日 yyyy-mm-dd */
+const todayDate = ref(yyyymmdd(nowDate)) // 作業年月日TODO: 日付のフォーマット関数
+/** 翌日年月日 yyyy-mm-dd */
+const nextDate = ref(yyyymmdd(tomorrowDate)) // 次回作業予定年月日TODO: 日付のフォーマット関数
 
-// 今回作業時間配列
+/** 今回作業プロジェクト */
+const project = ref('')
+
+/**
+ * 今回作業時間配列
+ * [{開始時間, 終了時間}, {}...]
+ */
 const todayTimeAry = ref([
   { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
 ])
 
-const project = ref('') // 作業プロジェクト
-
-// 次回作業時間配列
+/**
+ * 次回作業時間配列
+ * [{開始時間, 終了時間}, {}...]
+ */
 const nextTimeAry = ref([
   { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
 ])
-const issueText = ref('') // 備考欄
 
-const msg = ref('') // 本文
-const DialogMsg = ref('') // ダイアログ表示用本文
-const isClose = ref(true) // ダイアログ非表示フラグ
+/** 問題点 */
+const issueText = ref('')
 
-// 入力内容格納
-// localStorageの業務開始内容を初期値とする
+/** 本文 */
+const msg = ref('')
+
+/** ダイアログ表示用本文 省略処理済み */
+const DialogMsg = ref('')
+
+// ダイアログ非表示フラグ
+const isClose = ref(true)
+
+// 入力内容
+// localStorageの業務開始内容
 const willWorkAry = getWorkedAry('willWorkAry')
-const todayWorkedAry = willWorkAry ? ref(willWorkAry) : ref(['', '', '', '']) // 今回作業内容
-const todayResultAry = ref(['', '', '', '']) // 今回作業進捗
-const workTypeAry = ref(['none', 'none', 'none', 'none']) // 今回作業課題タイプ
-const workDetailAry = ref(['', '', '', '']) // 今回作業内容詳細
-const nextWorkedAry = ref(['', '', '', '']) // 次回作業内容
-const nextWorkTypeAry = ref(['none', 'none', 'none', 'none']) // 次回作業課題タイプ
-const NextworkDetailAry = ref(['', '', '', '']) // 次回作業内容詳細
+// 作業内容自動入力設定取得
+const isAutocomplete = !!getSetting('isAutocomplete') // null回避
+console.log(isAutocomplete)
+
+/** 今回作業内容 */
+const todayWorkedAry = willWorkAry && isAutocomplete ? ref(willWorkAry) : ref(['', '', '', ''])
+/** 今回作業進捗 */
+const todayResultAry = ref(['', '', '', ''])
+/** 今回作業課題タイプ */
+const workTypeAry = ref(['none', 'none', 'none', 'none'])
+/** 今回作業内容詳細 */
+const workDetailAry = ref(['', '', '', ''])
+
+/** 次回作業内容 */
+const nextWorkedAry = ref(['', '', '', ''])
+/** 次回作業課題タイプ */
+const nextWorkTypeAry = ref(['none', 'none', 'none', 'none'])
+/** 次回作業内容詳細 */
+const NextworkDetailAry = ref(['', '', '', ''])
 
 // 複数の入力項目をv-forで処理するときのindexとなる。
-let todayFormCount = 4 // 今回作業入力フォーム数
-let nextFormCount = 4 // 次回作業入力フォーム数
-const todayFormCountAry = ref([0, 1, 2, 3]) // 今回作業
-const nextFormCountAry = ref([0, 1, 2, 3]) // 次回作業予定
+/** 今回作業入力フォーム数 */
+let todayFormCount = 4
+/** 次回作業入力フォーム数 */
+let nextFormCount = 4
 
-// 作成ボタン押下処理
+/** 表示中入力欄 -今回作業 */
+const todayFormCountAry = ref([0, 1, 2, 3])
+/** 表示中入力欄 -次回作業予定 */
+const nextFormCountAry = ref([0, 1, 2, 3])
+
+/**
+ * 作成ボタン押下処理
+ */
 const clickCreateBtn = () => {
   // 受け取った日付をDate型に
   const nowYYYYMMDD = slashyyyymmdd(todayDate.value) // 現在年月日フォーマット
@@ -82,11 +114,16 @@ const clickCreateBtn = () => {
   const DateStart = new Date(todayDate.value) // 作業日時のDate
   const DateNext = new Date(nextYYYYMMDD) // 次回作業予定日のDate
 
-  // localStorageの業務開始文言作成時の作業内容を初期値とする
+  // localStorageに次回作業予定を保存
   setWorkedAry('nextWorkedAry', nextWorkedAry.value.filter(v => v !== ''))
 
   // 文章作成
+  // 今回作業進捗
   const todayResultTextAry = result(todayResultAry.value)
+  /**
+   * 今回作業データ配列
+   * [{作業内容, 作業進捗, 作業詳細}, {}...]
+   */
   const todayWorksTextAry: worksObject[] = todayFormCountAry.value.map((v, index) => {
     return {
       works: works(todayWorkedAry.value[index], workTypeAry.value[index]),
@@ -94,6 +131,11 @@ const clickCreateBtn = () => {
       detail: workDetailAry.value[index]
     }
   })
+
+  /**
+   * 次回作業予定データ配列
+   * [{作業内容, 作業詳細}, {}...]
+   */
   const nextWorksTextAry: worksObject[] = nextFormCountAry.value.map((v, index) => {
     return {
       works: works(nextWorkedAry.value[index], nextWorkTypeAry.value[index]),
@@ -116,12 +158,13 @@ const clickCreateBtn = () => {
   )
   console.log(msg.value)
 
-  console.log(todayWorksTextAry)
+  // 画面表示用
   DialogMsg.value = createBodyStr(
     project.value,
     nowYYYYMMDD,
     todayTimeAry.value,
     DateStart.getDay(),
+    // 省略処理
     todayWorksTextAry.map(work => {
       const msg = omitStr(work.detail)
       return {
@@ -146,8 +189,8 @@ const clickCreateBtn = () => {
 
   // dialog表示
   isClose.value = false
+
   // クリップボードにコピー
-  // コピー内容を選択する.
   const output = document.getElementById('output')
   setTimeout(async () => {
     // textContntからじゃないとコピーが上手くいかない。
@@ -156,18 +199,24 @@ const clickCreateBtn = () => {
   }, 1000)
 }
 
-// 閉じるボタン押下時処理
+// ダイアログクローズ処理
 const clickClose = () => {
   isClose.value = true
 }
 
-// 戻るボタン押下時処理
+// ホームへ戻る
 const clickBack = () => {
   router.push('/')
 }
 
-// クリアボタン押下処理
+/**
+ * クリアボタン押下処理
+ * 入力欄を全て空に。課題タイプ、日時は初期値を格納
+ * localStorageのwillWorkAryをクリア
+ */
 const clickClear = () => {
+  // 備考欄をクリア
+  issueText.value = ''
   // それぞれの入力欄を数は変えずに空にする
   const clearInputs = [todayWorkedAry.value, todayResultAry.value, workDetailAry.value, nextWorkedAry.value, NextworkDetailAry.value]
   clearInputs.forEach(ary => {
@@ -182,9 +231,6 @@ const clickClear = () => {
       ary[index] = 'none'
     })
   })
-
-  // 備考欄をクリア
-  issueText.value = ''
 
   // 日付を現在日時に変更
   const nowDate = new Date()
@@ -202,63 +248,67 @@ const clickClear = () => {
     { startTime: '11:00', endTime: '17:00' },
     { startTime: '21:00', endTime: '23:00' }
   ]
+
+  // localStorageのwillWorkAryをクリア
+  setWorkedAry('willWorkAry', ['', '', '', ''])
 }
 
 // 作業内容入力フォーム増減処理
-// 今回増加
+/** 今回作業入力フォーム増加 */
 const clickTodayPlus = () => {
-  todayFormCountAry.value.push(todayFormCount)
-  todayWorkedAry.value.push('')
-  todayResultAry.value.push('')
-  workTypeAry.value.push('none')
-  workDetailAry.value.push('')
+  todayFormCountAry.value.push(todayFormCount) // 表示中入力欄 -今回作業
+  todayWorkedAry.value.push('') // 今回作業内容
+  todayResultAry.value.push('') // 今回作業進捗
+  workTypeAry.value.push('none') // 今回作業課題タイプ
+  workDetailAry.value.push('') // 今回作業内容詳細
   todayFormCount++
 }
 
-// 次回増加
-const clickNextPlus = () => {
-  nextFormCountAry.value.push(nextFormCount)
-  nextWorkedAry.value.push('')
-  nextWorkTypeAry.value.push('none')
-  NextworkDetailAry.value.push('')
-  nextFormCount++
-}
-
-// 今回減少
+/** 今回作業入力フォーム減少 */
 const clickTodayMin = () => {
-  todayFormCountAry.value.pop()
-  todayWorkedAry.value.pop()
-  todayResultAry.value.pop()
-  workTypeAry.value.pop()
-  workDetailAry.value.pop()
+  todayFormCountAry.value.pop() // 表示中入力欄 -今回作業
+  todayWorkedAry.value.pop() // 今回作業内容
+  todayResultAry.value.pop() // 今回作業進捗
+  workTypeAry.value.pop() // 今回作業課題タイプ
+  workDetailAry.value.pop() // 今回作業内容詳細
   todayFormCount--
 }
 
-// 次回増加
+/** 次回作業入力フォーム増加 */
+const clickNextPlus = () => {
+  nextFormCountAry.value.push(nextFormCount) // 表示中入力欄 -次回作業予定
+  nextWorkedAry.value.push('') // 次回作業内容
+  nextWorkTypeAry.value.push('none') // 次回作業課題タイプ
+  NextworkDetailAry.value.push('') // 次回作業内容詳細
+  nextFormCount++
+}
+
+/** 次回作業入力フォーム減少 */
 const clickNextMin = () => {
-  nextFormCountAry.value.pop()
-  nextWorkedAry.value.pop()
-  nextWorkTypeAry.value.pop()
-  NextworkDetailAry.value.pop()
+  nextFormCountAry.value.pop() // 表示中入力欄 -次回作業予定
+  nextWorkedAry.value.pop()// 次回作業内容
+  nextWorkTypeAry.value.pop()// 次回作業課題タイプ
+  NextworkDetailAry.value.pop()// 次回作業内容詳細
   nextFormCount--
 }
 
 // 作業時間入力フォーム増減処理
-// 今回増加
+/** 今回作業時間入力フォーム増加 */
 const clickTodayTimePlus = () => {
   todayTimeAry.value.push({ startTime: '', endTime: '' })
 }
-// 今回減少
+
+/** 今回作業時間入力フォーム減少 */
 const clickTodayTimeMin = () => {
   todayTimeAry.value.pop()
 }
 
-// 次回増加
+/** 次回作業時間入力フォーム増加 */
 const clickNextTimePlus = () => {
   nextTimeAry.value.push({ startTime: '', endTime: '' })
 }
 
-// 次回減少
+/** 次回作業時間入力フォーム減少 */
 const clickNextTimeMin = () => {
   nextTimeAry.value.pop()
 }
