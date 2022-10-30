@@ -123,7 +123,7 @@ const clickClear = () => {
   margin: 140px 0px;
   display: flex;
   flex-direction: column;
-  margin-left: 35vw;
+  align-items: center;
 }
 
 .page-title {
@@ -131,10 +131,11 @@ const clickClear = () => {
 }
 
 #main-input {
+  margin-left: 10rem;
   width: 25em;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
 }
 .startChat-backBtn {
   width: 100px;

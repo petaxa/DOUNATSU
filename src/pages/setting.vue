@@ -18,24 +18,24 @@ const clickBack = () => {
     <div class="line"></div>
     <div class="setting-contents">
       <span class="setting-text">作業内容自動入力</span>
-      <input type="checkbox" id="is-auto-input-switch" /><label for="is-auto-input-switch">Toggle</label>
+      <input class="switch" type="checkbox" id="is-auto-input-switch" /><label for="is-auto-input-switch">Toggle</label>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
       <p class="setting-text">テーマ選択</p>
-      <input type="checkbox" id="theme-switch" /><label for="theme-switch">Toggle</label>
+      <input class="switch" type="checkbox" id="theme-switch" /><label for="theme-switch">Toggle</label>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
       <span class="setting-text">日報作業内容デフォルト個数</span>
-      <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
+      <input type="number" class="input-num">
     </div>
   </div>
 </template>
 
 <style scoped>
 /* toggle button */
-input {
+.switch {
   height: 0;
   width: 0;
   visibility: hidden;
@@ -76,6 +76,10 @@ input:checked+label:after {
 
 label:active:after {
   width: 43px;
+}
+
+.input-num {
+  width: 4em;
 }
 
 .content {

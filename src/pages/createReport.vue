@@ -179,7 +179,7 @@ const clickClear = () => {
   const setUTArys = [nextWorkTypeAry.value, workTypeAry.value]
   setUTArys.forEach(ary => {
     ary.forEach((w, index) => {
-      ary[index] = 'UT'
+      ary[index] = 'none'
     })
   })
 
