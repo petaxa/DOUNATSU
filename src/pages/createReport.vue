@@ -184,7 +184,7 @@ const clickCreateBtn = () => {
         detail: msg
       }
     }),
-    issueText.value
+    omitStr(issueText.value)
   )
 
   // dialog表示
