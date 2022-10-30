@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getWorkedAry, setLocalStorage } from '@/lib/localStorage'
+import { getSetting, getWorkedAry, setWorkedAry } from '@/lib/localStorage'
 import router from '@/router'
 import { ref } from 'vue'
 
@@ -18,7 +18,9 @@ const workTimeAry = ref([
 
 // localStorageの次回作業内容を初期値とする
 const nextWorkedAry = getWorkedAry('nextWorkedAry')
-const willWorkAry = nextWorkedAry ? ref(nextWorkedAry) : ref(['', ''])
+// 作業内容自動入力設定取得
+const isAutocomplete = !!getSetting('isAutocomplete') // null回避
+const willWorkAry = nextWorkedAry && isAutocomplete ? ref(nextWorkedAry) : ref(['', ''])
 
 // 今回増加
 const clickTodayPlus = () => {
@@ -43,7 +45,7 @@ const msg = ref('')
 const clickCreateBtn = () => {
   msg.value = `本日の業務開始します。\n${createTimesMsg()}で作業予定です\n【作業予定】\n${willWorkAry.value.join('\n')}`
   // localStorageに保存
-  setLocalStorage('willWorkAry', willWorkAry.value)
+  setWorkedAry('willWorkAry', willWorkAry.value)
   // クリップボードにコピー
   // コピー内容を選択する.
   const output = document.getElementById('output')
@@ -76,6 +78,8 @@ const clickClear = () => {
     { startTime: '11:00', endTime: '17:00' },
     { startTime: '21:00', endTime: '23:00' }
   ]
+  // localStorageのwillWorkAryをクリア
+  setWorkedAry('nextWorkedAry', ['', ''])
 }
 </script>
 
@@ -137,6 +141,7 @@ const clickClear = () => {
   flex-direction: column;
   align-items: left;
 }
+
 .startChat-backBtn {
   width: 100px;
 }

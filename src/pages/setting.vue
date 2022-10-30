@@ -1,9 +1,25 @@
 <script setup lang="ts">
+import { getSetting, setSetting } from '@/lib/localStorage'
 import router from '@/router'
+import { ref, watch } from 'vue'
+
 // 戻るボタン押下時処理
 const clickBack = () => {
   router.push('/')
 }
+
+// 設定
+const isAutocomplete = getSetting('isAutocomplete') ? ref(true) : ref(false) // null回避
+const isLight = getSetting('isLight') ? ref(true) : ref(false) // null回避
+const inputNum = ref(getSetting('inputNum'))
+
+// 設定が変更されたらlocalStorageを更新
+watch([isAutocomplete, isLight, inputNum], () => {
+  if (isAutocomplete.value === undefined || isLight.value === undefined || inputNum.value === undefined) return
+  setSetting('isAutocomplete', isAutocomplete.value)
+  setSetting('isLight', isLight.value)
+  setSetting('inputNum', inputNum.value)
+})
 
 </script>
 
@@ -18,17 +34,17 @@ const clickBack = () => {
     <div class="line"></div>
     <div class="setting-contents">
       <span class="setting-text">作業内容自動入力</span>
-      <input class="switch" type="checkbox" id="is-auto-input-switch" /><label for="is-auto-input-switch">Toggle</label>
+      <input v-model="isAutocomplete" class="switch" type="checkbox" id="is-auto-input-switch" /><label for="is-auto-input-switch">Toggle</label>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
       <p class="setting-text">テーマ選択</p>
-      <input class="switch" type="checkbox" id="theme-switch" /><label for="theme-switch">Toggle</label>
+      <input v-model="isLight" class="switch" type="checkbox" id="theme-switch" /><label for="theme-switch">Toggle</label>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
       <span class="setting-text">日報作業内容デフォルト個数</span>
-      <input type="number" class="input-num">
+      <input v-model="inputNum" type="number" class="input-num">
     </div>
   </div>
 </template>
