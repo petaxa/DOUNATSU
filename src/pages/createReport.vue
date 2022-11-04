@@ -405,10 +405,10 @@ const clickNextTimeMin = () => {
   </div>
   <p id="output" v-html="msg"></p>
 </template>
-<style>
+<style scoped>
 #dialogDisplay {
-  height: 50%;
-  width: 100%;
+  height: 50px;
+  width: 100px;
   min-width: 450px;
 }
 
@@ -416,37 +416,9 @@ const clickNextTimeMin = () => {
   display: none;
 }
 
-input,
-select,
-button,
-textarea {
-  border-radius: 5px;
-  border: 1px solid #74b1be;
-  color: white;
-  background-color: black;
-  height: 25px;
-}
-
-.date {
-  /* 日付 */
-  width: 120px;
-  margin-right: 5px;
-}
-
-.time {
-  /* 時間 */
-  width: 65px;
-}
-
 .project {
   /* プロジェクト名 */
   width: 80px;
-}
-
-.work {
-  /* 課題内容 */
-  width: 200px;
-  margin-right: 15px;
 }
 
 .result {
@@ -457,18 +429,6 @@ textarea {
 
 .workType {
   width: 70px;
-}
-
-.finButton {
-  /* 作成、戻るボタン */
-  width: 60px;
-  margin: 20px;
-}
-
-.formButton {
-  /* フォーム増減ボタン */
-  width: 40px;
-  margin: 10px;
 }
 
 .issue {

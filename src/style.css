@@ -1,3 +1,46 @@
+/* 入力系 */
+input,
+select,
+button,
+textarea {
+  border-radius: 5px;
+  border: 1px solid #74b1be;
+  color: white;
+  background-color: black;
+  height: 25px;
+}
+
+/* 各ボタンの設定 */
+.date {
+  /* 日付 */
+  width: 120px;
+  margin-right: 5px;
+}
+
+.time {
+  /* 時間 */
+  width: 65px;
+}
+
+.work {
+  /* 課題内容 */
+  width: 200px;
+  margin-right: 15px;
+}
+
+.finButton {
+  /* 作成、クリアボタン */
+  width: 60px;
+  margin: 20px;
+}
+
+.formButton {
+  /* フォーム増減ボタン */
+  width: 40px;
+  margin: 10px;
+}
+
+/* 閉じるボタン */
 .close.icon {
   color: #ffffff;
   position: absolute;
