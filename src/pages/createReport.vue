@@ -433,9 +433,7 @@ const showCopiedModal = async () => {
     <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
       <Dialog :msg="DialogMsg"></Dialog>
     </div>
-    <div v-if="isCopiedModal">
-      <copiedModal class="copiedModal"></copiedModal>
-    </div>
+    <copiedModal v-if="isCopiedModal" class="copiedModal"></copiedModal>
     <p id="output" v-html="msg"></p>
   </div>
 </template>

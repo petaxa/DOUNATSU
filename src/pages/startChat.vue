@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getSetting, getWorkedAry, getWorkedTimeAry, setWorkedAry, setWorkedTimeAry } from '@/lib/localStorage'
+import { delay } from '@/lib/time'
 import router from '@/router'
+import copiedModal from '../components/copiedModal.vue'
 import { ref } from 'vue'
 
 // 作業時間、作業予定(複数)
@@ -56,6 +58,7 @@ const clickCreateBtn = () => {
   setTimeout(async () => {
     // textContntからじゃないとコピーが上手くいかない。
     await navigator.clipboard.writeText(output?.textContent ?? 'can not be copied')
+    await showCopiedModal()
     console.log('copied')
   }, 1000)
 }
@@ -88,6 +91,14 @@ const clickClear = () => {
     { startTime: '11:00', endTime: '17:00' },
     { startTime: '21:00', endTime: '23:00' }
   ])
+}
+
+// コピー完了モーダル表示処理
+const isCopiedModal = ref(false)
+const showCopiedModal = async () => {
+  isCopiedModal.value = true
+  await delay(1)
+  isCopiedModal.value = false
 }
 </script>
 
@@ -127,6 +138,7 @@ const clickClear = () => {
     </div>
     <p id="output">{{ msg }}</p>
   </div>
+  <copiedModal v-if="isCopiedModal" class="copiedModal"></copiedModal>
 </template>
 
 <style scoped>
@@ -160,5 +172,10 @@ const clickClear = () => {
 /* 作業内容入力欄 */
 .work {
   margin-top: 3px;
+}
+
+/* コピー用領域非表示 */
+#output {
+  display: none;
 }
 </style>
