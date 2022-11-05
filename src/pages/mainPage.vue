@@ -35,6 +35,7 @@ const goSetting = () => {
 </template>
 
 <style scoped>
+/* コンテンツ欄 */
 #content {
   display: flex;
   flex-direction: column;
@@ -42,6 +43,7 @@ const goSetting = () => {
   margin-top: 25vh;
 }
 
+/* 横幅Max */
 .mainpage-button {
   width: 550px;
   height: 100px;
@@ -50,6 +52,7 @@ const goSetting = () => {
   margin-bottom: 20px;
 }
 
+/* 横幅Half */
 .mainpage-half-button {
   width: 270px;
   height: 100px;

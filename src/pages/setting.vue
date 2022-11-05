@@ -52,6 +52,34 @@ watch([isAutocomplete, isLight, inputNum], () => {
 </template>
 
 <style scoped>
+/* コンテンツ全体 */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3em;
+}
+
+/* タイトル */
+#title {
+  font-size: 40px;
+  margin: 0;
+}
+
+/* 設定入力欄 */
+.setting-contents {
+  width: 390px;
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+/* 設定テキスト */
+.setting-text {
+  font-size: 20px;
+  /* margin-right: 150px; */
+}
+
 /* toggle button */
 .switch {
   height: 0;
@@ -59,7 +87,6 @@ watch([isAutocomplete, isLight, inputNum], () => {
   visibility: hidden;
   display: none;
 }
-
 label {
   cursor: pointer;
   text-indent: -9999px;
@@ -70,7 +97,6 @@ label {
   border-radius: 100px;
   position: relative;
 }
-
 label:after {
   content: '';
   position: absolute;
@@ -82,48 +108,23 @@ label:after {
   border-radius: 50%;
   transition: 0.3s;
 }
-
 input:checked+label {
   background: #74b1be;
 }
-
 input:checked+label:after {
   left: calc(100% - 5px);
   transform: translateX(-100%);
 }
-
 label:active:after {
   width: 43px;
 }
 
+/* 数字入力欄 */
 .input-num {
   width: 4em;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 3em;
-}
-
-#title {
-  font-size: 40px;
-  margin: 0;
-}
-
-.setting-contents {
-  width: 390px;
-  display: flex;
-  margin-bottom: 20px;
-  justify-content: space-between;
-}
-
-.setting-text {
-  font-size: 20px;
-  /* margin-right: 150px; */
-}
-
+/* 区切り線 */
 .line {
   margin-bottom: 20px;
 }

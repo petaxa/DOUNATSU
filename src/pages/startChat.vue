@@ -122,17 +122,24 @@ const clickClear = () => {
 </template>
 
 <style scoped>
+/* 画面全体 */
 #startChat {
   margin: 140px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+/* コンテンツ部分 */
+.startChat-backBtn {
+  width: 100px;
+}
 
+/* タイトル */
 .page-title {
   font-size: 35px;
 }
 
+/* 入力欄 */
 #main-input {
   margin-left: 10rem;
   width: 25em;
@@ -141,9 +148,7 @@ const clickClear = () => {
   align-items: left;
 }
 
-.startChat-backBtn {
-  width: 100px;
-}
+/* 作業内容入力欄 */
 .work {
   margin-top: 3px;
 }
