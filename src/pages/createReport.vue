@@ -4,8 +4,10 @@
 import { ref } from 'vue'
 import { result, works, worksObject, createBodyStr, omitStr } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
+import copiedModal from '../components/copiedModal.vue'
 import router from '../router/index'
 import { getSetting, getWorkedAry, getWorkedTimeAry, setWorkedAry, setWorkedTimeAry } from '@/lib/localStorage'
+import { delay } from '@/lib/time'
 
 // フォーマット関数
 /**
@@ -211,6 +213,7 @@ const clickCreateBtn = () => {
   setTimeout(async () => {
     // textContntからじゃないとコピーが上手くいかない。
     await navigator.clipboard.writeText(output?.textContent ?? 'can not be copied')
+    await showCopiedModal()
     console.log('copied')
   }, 1000)
 }
@@ -333,6 +336,13 @@ const clickNextTimeMin = () => {
   nextTimeAry.value.pop()
 }
 
+// コピー完了モーダル表示処理
+const isCopiedModal = ref(false)
+const showCopiedModal = async () => {
+  isCopiedModal.value = true
+  await delay(1)
+  isCopiedModal.value = false
+}
 </script>
 <template>
   <div id="create-report">
@@ -422,6 +432,9 @@ const clickNextTimeMin = () => {
     </div>
     <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
       <Dialog :msg="DialogMsg"></Dialog>
+    </div>
+    <div v-if="isCopiedModal">
+      <copiedModal class="copiedModal"></copiedModal>
     </div>
     <p id="output" v-html="msg"></p>
   </div>

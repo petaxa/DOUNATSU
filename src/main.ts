@@ -8,11 +8,11 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faXmarkCircle, faArrowAltCircleLeft, faCircleLeft } from '@fortawesome/free-regular-svg-icons'
 import { setSetting } from './lib/localStorage'
 /* add icons to the library */
-library.add(faUserSecret, faXmarkCircle, faArrowAltCircleLeft, faCircleLeft)
+library.add(faUserSecret, faXmarkCircle, faArrowAltCircleLeft, faCircleLeft, faCheck)
 
 // settingの初期値設定
 setSetting('isAutocomplete', true)

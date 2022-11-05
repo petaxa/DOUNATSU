@@ -98,3 +98,10 @@ button.icon {
   height: 1px;
   width: 400px;
 }
+
+/* コピー完了モーダル */
+.copiedModal {
+  position: absolute;
+  top: 50vh;
+  left: 35vw;
+}
