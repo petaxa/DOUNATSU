@@ -9,6 +9,7 @@ const clickBack = () => {
 }
 
 // 設定
+// 初期値はmain.tsで設定
 const isAutocomplete = getSetting('isAutocomplete') ? ref(true) : ref(false) // null回避
 const isLight = getSetting('isLight') ? ref(true) : ref(false) // null回避
 const inputNum = ref(getSetting('inputNum'))

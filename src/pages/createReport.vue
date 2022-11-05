@@ -98,14 +98,26 @@ const NextworkDetailAry = ref(['', '', '', ''])
 
 // 複数の入力項目をv-forで処理するときのindexとなる。
 /** 今回作業入力フォーム数 */
-let todayFormCount = 4
+let todayFormCount = Number(getSetting('inputNum'))
 /** 次回作業入力フォーム数 */
-let nextFormCount = 4
+let nextFormCount = Number(getSetting('inputNum'))
 
 /** 表示中入力欄 -今回作業 */
-const todayFormCountAry = ref([0, 1, 2, 3])
+const todayFormCountAry = ref((() => {
+  const ary = []
+  for (let i = 0; i < todayFormCount; i++) {
+    ary.push(i)
+  }
+  return ary
+})())
 /** 表示中入力欄 -次回作業予定 */
-const nextFormCountAry = ref([0, 1, 2, 3])
+const nextFormCountAry = ref((() => {
+  const ary = []
+  for (let i = 0; i < nextFormCount; i++) {
+    ary.push(i)
+  }
+  return ary
+})())
 
 /**
  * 作成ボタン押下処理
