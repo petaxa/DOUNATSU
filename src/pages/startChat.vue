@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getSetting, getWorkedAry, setWorkedAry } from '@/lib/localStorage'
+import { getSetting, getWorkedAry, getWorkedTimeAry, setWorkedAry, setWorkedTimeAry } from '@/lib/localStorage'
 import router from '@/router'
 import { ref } from 'vue'
 
@@ -11,16 +11,19 @@ import { ref } from 'vue'
  * OPAL-Tutorialの作成
  * 新会社売上, 収支計算
  */
-const workTimeAry = ref([
+// 設定取得
+const isAutocomplete = !!getSetting('isAutocomplete') // null回避
+// localStorageの次回作業内容を初期値とする
+const nextWorkedAry = getWorkedAry('nextWorkedAry')
+const nextTimeAry = getWorkedTimeAry('nextTimeAry')
+
+// 作業内容
+const willWorkAry = nextWorkedAry && isAutocomplete ? ref(nextWorkedAry) : ref(['', ''])
+// 作業時間
+const workTimeAry = nextTimeAry && isAutocomplete ? ref(nextTimeAry) : ref([
   { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
 ])
-
-// localStorageの次回作業内容を初期値とする
-const nextWorkedAry = getWorkedAry('nextWorkedAry')
-// 作業内容自動入力設定取得
-const isAutocomplete = !!getSetting('isAutocomplete') // null回避
-const willWorkAry = nextWorkedAry && isAutocomplete ? ref(nextWorkedAry) : ref(['', ''])
 
 // 今回増加
 const clickTodayPlus = () => {
@@ -46,6 +49,7 @@ const clickCreateBtn = () => {
   msg.value = `本日の業務開始します。\n${createTimesMsg()}で作業予定です\n【作業予定】\n${willWorkAry.value.join('\n')}`
   // localStorageに保存
   setWorkedAry('willWorkAry', willWorkAry.value)
+  setWorkedTimeAry('workTimeAry', workTimeAry.value)
   // クリップボードにコピー
   // コピー内容を選択する.
   const output = document.getElementById('output')
@@ -80,6 +84,10 @@ const clickClear = () => {
   ]
   // localStorageのwillWorkAryをクリア
   setWorkedAry('nextWorkedAry', ['', ''])
+  setWorkedTimeAry('workTimeAry', [
+    { startTime: '11:00', endTime: '17:00' },
+    { startTime: '21:00', endTime: '23:00' }
+  ])
 }
 </script>
 
@@ -129,6 +137,7 @@ const clickClear = () => {
   flex-direction: column;
   align-items: center;
 }
+
 /* コンテンツ部分 */
 .startChat-backBtn {
   width: 100px;

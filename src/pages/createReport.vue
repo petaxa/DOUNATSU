@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { result, works, worksObject, createBodyStr, omitStr } from '../lib/createReportLib'
 import Dialog from '../components/dialog.vue'
 import router from '../router/index'
-import { getSetting, getWorkedAry, setWorkedAry } from '@/lib/localStorage'
+import { getSetting, getWorkedAry, getWorkedTimeAry, setWorkedAry, setWorkedTimeAry } from '@/lib/localStorage'
 
 // フォーマット関数
 /**
@@ -40,11 +40,18 @@ const nextDate = ref(yyyymmdd(tomorrowDate)) // 次回作業予定年月日TODO:
 /** 今回作業プロジェクト */
 const project = ref('')
 
+/** 作業内容自動入力設定取得 */
+const isAutocomplete = !!getSetting('isAutocomplete') // null回避
+
+// localStorageの作業時間
+const workTimeAry = getWorkedTimeAry('workTimeAry')
+console.log(workTimeAry)
+
 /**
  * 今回作業時間配列
  * [{開始時間, 終了時間}, {}...]
  */
-const todayTimeAry = ref([
+const todayTimeAry = workTimeAry && isAutocomplete ? ref(workTimeAry) : ref([
   { startTime: '11:00', endTime: '17:00' },
   { startTime: '21:00', endTime: '23:00' }
 ])
@@ -73,10 +80,6 @@ const isClose = ref(true)
 // 入力内容
 // localStorageの業務開始内容
 const willWorkAry = getWorkedAry('willWorkAry')
-// 作業内容自動入力設定取得
-const isAutocomplete = !!getSetting('isAutocomplete') // null回避
-console.log(isAutocomplete)
-
 /** 今回作業内容 */
 const todayWorkedAry = willWorkAry && isAutocomplete ? ref(willWorkAry) : ref(['', '', '', ''])
 /** 今回作業進捗 */
@@ -116,6 +119,7 @@ const clickCreateBtn = () => {
 
   // localStorageに次回作業予定を保存
   setWorkedAry('nextWorkedAry', nextWorkedAry.value.filter(v => v !== ''))
+  setWorkedTimeAry('nextTimeAry', nextTimeAry.value)
 
   // 文章作成
   // 今回作業進捗
@@ -251,6 +255,10 @@ const clickClear = () => {
 
   // localStorageのwillWorkAryをクリア
   setWorkedAry('willWorkAry', ['', '', '', ''])
+  setWorkedTimeAry('workTimeAry', [
+    { startTime: '11:00', endTime: '17:00' },
+    { startTime: '21:00', endTime: '23:00' }
+  ])
 }
 
 // 作業内容入力フォーム増減処理
@@ -458,13 +466,16 @@ const clickNextTimeMin = () => {
   overflow-y: scroll;
   height: 73vh;
 }
+
 .form-area::-webkit-scrollbar {
   width: 8px;
 }
+
 .form-area::-webkit-scrollbar-track {
   background-color: #2f3241;
   border-radius: 5px;
 }
+
 .form-area::-webkit-scrollbar-thumb {
   background-color: #46495a;
   border-radius: 5px;
