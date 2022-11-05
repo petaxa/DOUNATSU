@@ -8,7 +8,11 @@
   ボタン-hover: #e9e6e6
 */
 
-
+/* 画面テーマ */
+body {
+  background-color: black;
+  color: white;
+}
 
 /* 入力系 */
 input,
@@ -93,10 +97,4 @@ button.icon {
   border-bottom: 1px solid #B1B1B1;
   height: 1px;
   width: 400px;
-}
-
-/* 画面全体 */
-body {
-  margin: 0;
-  background-color: black;
 }
