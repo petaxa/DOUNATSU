@@ -24,22 +24,24 @@ watch([isAutocomplete, isLight, inputNum], () => {
 </script>
 
 <template>
+  <button class="icon" @click="clickBack">
+    <font-awesome-icon icon="fa-regular fa-arrow-alt-circle-left" />
+  </button>
   <div class="content">
     <div style="display:flex;">
       <p id="title">setting</p>
-      <div class="back-button setting-backBtn">
-        <button @click="clickBack" class="close icon"></button>
-      </div>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
       <span class="setting-text">作業内容自動入力</span>
-      <input v-model="isAutocomplete" class="switch" type="checkbox" id="is-auto-input-switch" /><label for="is-auto-input-switch">Toggle</label>
+      <input v-model="isAutocomplete" class="switch" type="checkbox" id="is-auto-input-switch" /><label
+        for="is-auto-input-switch">Toggle</label>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
       <p class="setting-text">テーマ選択</p>
-      <input v-model="isLight" class="switch" type="checkbox" id="theme-switch" /><label for="theme-switch">Toggle</label>
+      <input v-model="isLight" class="switch" type="checkbox" id="theme-switch" /><label
+        for="theme-switch">Toggle</label>
     </div>
     <div class="line"></div>
     <div class="setting-contents">
@@ -102,7 +104,7 @@ label:active:after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25vh;
+  margin-top: 3em;
 }
 
 #title {
@@ -121,10 +123,9 @@ label:active:after {
   font-size: 20px;
   /* margin-right: 150px; */
 }
-.setting-backBtn{
-  width: 15em;
-}
-.line{
+
+.line {
   margin-bottom: 20px;
 }
+
 </style>

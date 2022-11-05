@@ -14,7 +14,7 @@ console.log(fullTexts)
   <div id="dialogOuter">
     <div id="dialogWindow">
       <div id="dialogClose">
-        <button class="close icon"></button>
+        <font-awesome-icon icon="fa-regular fa-circle-xmark" />
       </div>
       <h2 id="dialogTitle">日報</h2>
       <div v-for="text in fullTexts" :key="text" id="dialogTexts">

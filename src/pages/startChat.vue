@@ -84,13 +84,11 @@ const clickClear = () => {
 </script>
 
 <template>
+  <button @click="clickBack" class="icon">
+    <font-awesome-icon icon="fa-regular fa-arrow-alt-circle-left" />
+  </button>
   <div id="startChat">
-    <div style="display:flex;">
-      <p class="page-title">作業開始文言作成</p>
-      <div class="back-button startChat-backBtn">
-        <button @click="clickBack" class="close icon"></button>
-      </div>
-    </div>
+    <p class="page-title">作業開始文言作成</p>
     <div class="line-parent">
       <div class="line"></div>
     </div>
@@ -102,6 +100,7 @@ const clickClear = () => {
       </div>
       <div v-for="(i, index) of workTimeAry" :key="index">
         <input type="time" v-model="i.startTime" class="time" />
+        <span> ~ </span>
         <input type="time" v-model="i.endTime" class="time" />
       </div>
       <div class="button">
@@ -122,7 +121,7 @@ const clickClear = () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 #startChat {
   margin: 140px 0px;
   display: flex;
@@ -144,5 +143,8 @@ const clickClear = () => {
 
 .startChat-backBtn {
   width: 100px;
+}
+.work {
+  margin-top: 3px;
 }
 </style>

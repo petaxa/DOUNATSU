@@ -45,7 +45,6 @@ const goSetting = () => {
 .mainpage-button {
   width: 550px;
   height: 100px;
-  background-color: #D9D9D9;
   color: #000000;
   font-size: 25px;
   margin-bottom: 20px;
@@ -56,6 +55,5 @@ const goSetting = () => {
   height: 100px;
   color: #000000;
   font-size: 25px;
-  background-color: #D9D9D9;
 }
 </style>

@@ -315,95 +315,98 @@ const clickNextTimeMin = () => {
 
 </script>
 <template>
-  <div id="createReport">
-    <div style="height:3px"></div>
-    <div class="back-button">
-      <button @click="clickBack" class="close icon"></button>
-    </div>
-    <div id="inputArea">
-      <div class="today">
-        <p>1.プロジェクト名 <input type="project" v-model="project" placeholder="OPAL" class="project" /></p>
-        <div id="workedDate">
-          <div class="button">
-            <span>2.作業日</span>
-            <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
-            <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
+  <div id="create-report">
+    <button @click="clickBack" class="icon">
+      <font-awesome-icon icon="fa-regular fa-arrow-alt-circle-left" />
+    </button>
+    <div id="createReport">
+      <div id="inputArea">
+        <div class="today">
+          <p>1.プロジェクト名 <input type="project" v-model="project" placeholder="OPAL" class="project" /></p>
+          <div id="workedDate">
+            <div class="button">
+              <span>2.作業日</span>
+              <button id="TimePlus" class="formButton" @click="clickTodayTimePlus">+</button>
+              <button id="TimeMin" class="formButton" @click="clickTodayTimeMin">-</button>
+            </div>
+            <input type="date" v-model="todayDate" class="date" />
+            <div v-for="(i, index) of todayTimeAry" :key="index">
+              <p>
+                <input type="time" v-model="i.startTime" class="time" />
+                <span> ~ </span>
+                <input type="time" v-model="i.endTime" class="time" />
+              </p>
+            </div>
+            <div class="button">
+              <span>3.作業内容</span>
+              <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
+              <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
+            </div>
           </div>
-          <input type="date" v-model="todayDate" class="date" />
-          <div v-for="(i, index) of todayTimeAry" :key="index">
+          <div id="workedList">
+            <div class="form-area">
+              <div class="form" v-for="(item, index) of todayFormCountAry" :key="index">
+                <span>{{ `3-${index + 1}.` }}<input type="text" v-model="todayWorkedAry[item]" class="work" /></span>
+                <input type="number" v-model="todayResultAry[item]" class="result" />
+                <select name="workType" v-model="workTypeAry[item]" class="workType">
+                  <option value="UT">UT課題</option>
+                  <option value="none">none</option>
+                </select>
+                <textarea v-model="workDetailAry[item]" cols="30" rows="10"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="next">
+          <div class="button">
+            <span>4.次回作業予定日</span>
+            <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
+            <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
+          </div>
+          <input type="date" v-model="nextDate" class="date" />
+          <div v-for="(i, index) of nextTimeAry" :key="index">
             <p>
               <input type="time" v-model="i.startTime" class="time" />
               <span> ~ </span>
               <input type="time" v-model="i.endTime" class="time" />
             </p>
           </div>
-          <div class="button">
-            <span>3.作業内容</span>
-            <button id="workedPlus" class="formButton" @click="clickTodayPlus">+</button>
-            <button id="workedMin" class="formButton" @click="clickTodayMin">-</button>
+          <div id="willList">
+            <div class="button">
+              <span>5.次回作業予定</span>
+              <button id="nextPlus" class="formButton" @click="clickNextPlus">+</button>
+              <button id="nextMin" class="formButton" @click="clickNextMin">-</button>
+            </div>
+            <div class="form-area">
+              <div class="form" v-for="(item, index) of nextFormCountAry" :key="index">
+                <span>{{ `5-${index + 1}. ` }}<input type="text" v-model="nextWorkedAry[item]" class="work" /></span>
+                <select name="workType" v-model="nextWorkTypeAry[item]" class="workType">
+                  <option value="UT">UT課題</option>
+                  <option value="none">none</option>
+                </select>
+                <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10"></textarea>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="workedList">
-          <div class="form" v-for="(item, index) of todayFormCountAry" :key="index">
-            <span>{{ `3-${index + 1}.` }}<input type="text" v-model="todayWorkedAry[item]" class="work" /></span>
-            <input type="number" v-model="todayResultAry[item]" class="result" />
-            <select name="workType" v-model="workTypeAry[item]" class="workType">
-              <option value="UT">UT課題</option>
-              <option value="none">none</option>
-            </select>
-            <textarea v-model="workDetailAry[item]" cols="30" rows="10"
-              style="display: block; height:fit-content; width:100%;"></textarea>
-          </div>
-        </div>
-      </div>
 
-      <div class="next">
-        <div class="button">
-          <span>4.次回作業予定日</span>
-          <button id="TimePlus" class="formButton" @click="clickNextTimePlus">+</button>
-          <button id="TimeMin" class="formButton" @click="clickNextTimeMin">-</button>
-        </div>
-        <input type="date" v-model="nextDate" class="date" />
-        <div v-for="(i, index) of nextTimeAry" :key="index">
-          <p>
-            <input type="time" v-model="i.startTime" class="time" />
-            <span> ~ </span>
-            <input type="time" v-model="i.endTime" class="time" />
-          </p>
-        </div>
-        <div id="willList">
+        <div id="endContents">
+          <div id="issue">
+            <textarea type="text" v-model="issueText" class="issue"></textarea>
+          </div>
           <div>
-            <span>5.次回作業予定</span>
-            <button id="nextPlus" class="formButton" @click="clickNextPlus">+</button>
-            <button id="nextMin" class="formButton" @click="clickNextMin">-</button>
+            <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
+            <button @click="clickClear" class="finButton">クリア</button>
           </div>
-          <div class="form" v-for="(item, index) of nextFormCountAry" :key="index">
-            <span>{{ `5-${index + 1}. ` }}<input type="text" v-model="nextWorkedAry[item]" class="work" /></span>
-            <select name="workType" v-model="nextWorkTypeAry[item]" class="workType">
-              <option value="UT">UT課題</option>
-              <option value="none">none</option>
-            </select>
-            <textarea v-model="NextworkDetailAry[item]" cols="30" rows="10"
-              style="display: block; height:fit-content; width:100%;"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div id="endContents">
-        <div id="issue">
-          <textarea type="text" v-model="issueText" class="issue" style="height:250px;"></textarea>
-        </div>
-        <div>
-          <button id="create" @click="clickCreateBtn" class="finButton">作成</button>
-          <button @click="clickClear" class="finButton">クリア</button>
         </div>
       </div>
     </div>
+    <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
+      <Dialog :msg="DialogMsg"></Dialog>
+    </div>
+    <p id="output" v-html="msg"></p>
   </div>
-  <div v-if="!isClose" id="dialogDisplay" @click="clickClose">
-    <Dialog :msg="DialogMsg"></Dialog>
-  </div>
-  <p id="output" v-html="msg"></p>
 </template>
 <style scoped>
 #dialogDisplay {
@@ -433,12 +436,13 @@ const clickNextTimeMin = () => {
 
 .issue {
   width: 400px;
-  height: 60px;
+  height: 250px;
   margin-top: 10px;
 }
 
 .form {
-  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-right: 10px;
 }
 
 #inputArea {
@@ -458,9 +462,39 @@ const clickNextTimeMin = () => {
   text-align: center;
 }
 
+.form-area {
+  overflow-y: scroll;
+  height: 73vh;
+}
+
+.form-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-area::-webkit-scrollbar-track {
+  background-color: #2f3241;
+  border-radius: 5px;
+}
+
+.form-area::-webkit-scrollbar-thumb {
+  background-color: #46495a;
+  border-radius: 5px;
+}
+
 .back-button {
   height: 40px;
   display: flex;
   flex-direction: row-reverse;
+}
+
+textarea {
+  display: block;
+  height: fit-content;
+  width: 100%;
+  margin-top: 3px;
+}
+
+.formButton {
+  margin: 3px 10px 0px;
 }
 </style>
