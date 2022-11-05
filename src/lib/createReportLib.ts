@@ -139,6 +139,6 @@ export const createBodyStr = (
 export const omitStr = (str: string) => {
   console.log(typeof str)
   const omitNum = 30
-  if (str.length > omitNum) return `${str.substring(0, omitNum)}...`
+  if (String(str).length > omitNum) return `${str.substring(0, omitNum)}...`
   return str
 }
