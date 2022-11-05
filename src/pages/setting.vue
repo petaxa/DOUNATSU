@@ -38,12 +38,13 @@ watch([isAutocomplete, isLight, inputNum], () => {
       <input v-model="isAutocomplete" class="switch" type="checkbox" id="is-auto-input-switch" /><label
         for="is-auto-input-switch">Toggle</label>
     </div>
-    <div class="line"></div>
+    <!-- テーマ設定は一旦外す。また今度やる。
+      <div class="line"></div>
     <div class="setting-contents">
       <p class="setting-text">テーマ選択</p>
       <input v-model="isLight" class="switch" type="checkbox" id="theme-switch" /><label
         for="theme-switch">Toggle</label>
-    </div>
+    </div> -->
     <div class="line"></div>
     <div class="setting-contents">
       <span class="setting-text">日報作業内容デフォルト個数</span>
