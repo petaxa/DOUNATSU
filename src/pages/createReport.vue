@@ -485,6 +485,9 @@ const showCopiedModal = async () => {
 }
 
 /* 作業関係入力欄エリア */
+textarea, input {
+  cursor: text;
+}
 .form-area {
   overflow-y: scroll;
   height: 73vh;
