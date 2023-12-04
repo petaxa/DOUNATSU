@@ -113,19 +113,19 @@ export const createBodyStr = (
 ) => {
   return `ーーーーーーーーーーーーーーーーー
   【日報】
-  1. [プロジェクト名]${project === '' ? 'OPAL' : project}
-  
+  1. [プロジェクト名]${project === '' ? '' : project}
+
   2. [作業日]${workingDate(nowYYYYMMDD, todayTimeAry, todaysDate)}
-  
+
   3. [作業内容]
   ${worksToText(todayWorksTextAry, true)}
-  
+
   4. [次回作業予定日]
   ${workingDate(nextYYYYMMDD, nextTimeAry, nextDate)}
-  
+
   5. [次回作業予定]
   ${worksToText(nextWorksTextAry, false)}
-  
+
   [問題点]
   ${issueText}`
 }

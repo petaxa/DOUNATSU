@@ -351,7 +351,7 @@ const showCopiedModal = async () => {
     </button>
     <div id="inputArea">
       <div class="today">
-        <p>1.プロジェクト名 <input type="project" v-model="project" placeholder="OPAL" class="project" /></p>
+        <p>1.プロジェクト名 <input type="project" v-model="project" class="project" /></p>
         <div id="workedDate">
           <div class="button">
             <span>2.作業日</span>
