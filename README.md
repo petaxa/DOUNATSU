@@ -1,24 +1,17 @@
-# dailyreport
+# 日報アプリ
 
-## Project setup
-```
-pnpm install
-```
+このデスクトップアプリケーションは、アルバイト先での日報作成を支援するためのツールです。
 
-### Compiles and hot-reloads for development
-```
-pnpm run serve
-```
+## 機能
 
-### Compiles and minifies for production
-```
-pnpm run build
-```
+- フォームに内容を入力すると、事前に設定されたひな形に沿って文章を生成します。
+- 生成された文章はクリップボードにコピーされるので、他のアプリケーションに簡単に貼り付けることができます。
 
-### Lints and fixes files
-```
-pnpm run lint
-```
+## 技術スタック
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Electron: デスクトップアプリケーションフレームワーク
+- Vue.js: JavaScriptフレームワーク
+- TypeScript: 型付きJavaScript
+- Web Storage API: アプリケーションデータの保存
+
+Electronを使用することで、Web技術を活用しながらもネイティブデスクトップアプリケーションを構築することができます。また、機密データを外部に保持する必要がないため、WebStorageを利用してデータ管理を行っています。
