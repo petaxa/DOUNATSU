@@ -1,4 +1,5 @@
-# 日報アプリ
+# DORTS
+DORTS(Daily Organized Reporting and Task System): /dɔːrts/
 
 (私の)アルバイト先での日報、作業開始メッセージを作成するためのデスクトップアプリです。
 
