@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },
-
     modules: [
         "nuxt-primevue",
         "@nuxt/test-utils/module",
@@ -9,6 +8,7 @@ export default defineNuxtConfig({
         "@pinia-plugin-persistedstate/nuxt",
         // "nuxt-electron",
     ],
+
     primevue: {
         options: {
             ripple: true,
