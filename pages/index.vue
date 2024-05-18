@@ -2,9 +2,9 @@
     <main>
         <section class="content-wrap">
             <div class="container">
-                <h1 class="app-title">Balance</h1>
+                <h1 class="app-title">DORTS</h1>
                 <nav class="contents-nav">
-                    <NuxtLink to="/">
+                    <NuxtLink to="/daily-report">
                         <Button class="p-button-lg content-button" label="日報作成" />
                     </NuxtLink>
                     <NuxtLink to="/">
