@@ -52,20 +52,3 @@ const validDetailsForTime = (dateString: string): DateDetails => {
 
     return { date, display };
 };
-
-/**
- * WorkTimeRangeDetailsをWorkTimeRangeに戻す
- * @param WorkTimeRangeDetails
- * @returns
- */
-export const revertDetailsWorkTime = (
-    WorkTimeRangeDetails: WorkTimeDetailsTypeRange[]
-) => {
-    return WorkTimeRangeDetails.map((range) => ({
-        from: range.from?.date,
-        to: range.to?.date,
-    })).filter(
-        (range): range is WorkTimeRange =>
-            range.from !== null && range.to !== null
-    );
-};
