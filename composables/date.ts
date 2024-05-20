@@ -2,7 +2,8 @@
  * Date型の日付をYYYY-MM-DDにフォーマットする
  * @param date
  */
-export const formatToStoreStringDate = (date: Date) => {
+export const formatToYYYYMMDD = (date: Date) => {
+    console.log("check formatToStoreStringDate", date);
     const yyyy = paddingDatePart(date.getFullYear(), 4);
     const mm = paddingDatePart(date.getMonth() + 1, 2);
     const dd = paddingDatePart(date.getDate(), 2);
@@ -14,7 +15,7 @@ export const formatToStoreStringDate = (date: Date) => {
  * @param date
  * @returns
  */
-export const formatToStoreStringTime = (date: Date) => {
+export const formatToHHMM = (date: Date) => {
     const hh = paddingDatePart(date.getHours(), 2);
     const mm = paddingDatePart(date.getMinutes(), 2);
     return `${hh}:${mm}`;
@@ -49,4 +50,13 @@ export const translateStoreDateToDate = (
  */
 const paddingDatePart = (datePart: number, length: number) => {
     return String(datePart).padStart(length, "0");
+};
+
+/**
+ * 有効なDateかを確認する
+ * @param date
+ * @returns
+ */
+export const checkValidDate = (date: Date) => {
+    return !isNaN(date.getDate());
 };
