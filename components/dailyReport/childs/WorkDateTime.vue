@@ -10,8 +10,10 @@ import type {
 const props = defineProps<WorkDateTimeProps>();
 
 onMounted(() => {
+    if (!props.isInput) return;
+
     // 作業日を初期化
-    const dateTypeDate = props.store.WorkDate.date;
+    const dateTypeDate = props.store.workDate.date;
     if (dateTypeDate === null) {
         // 無効な値だった場合は現在日時で更新する
         const now = new Date();
@@ -23,11 +25,13 @@ onMounted(() => {
 
     // storeの作業時間を表示用に成型
     // storeの作業時間の内、from,toどちらもnullのものは除外
-    workTimes.value = props.store.WorkTimeRange.map((range) => {
-        const from = range.from.date;
-        const to = range.to.date;
-        return { from, to };
-    }).filter((range) => range.from !== null || range.to !== null);
+    workTimes.value = props.store.workTimeRange
+        .map((range) => {
+            const from = range.from.date;
+            const to = range.to.date;
+            return { from, to };
+        })
+        .filter((range) => range.from !== null || range.to !== null);
     // 作業時間を初期化
     if (workTimes.value.length === 0) {
         // ストアに何もなかったら現在日時で初期化
@@ -78,13 +82,28 @@ const timeMinus = () => {
 </script>
 
 <template>
-    <Calendar v-model="date" dateFormat="yy/mm/dd" showButtonBar />
-    <div class="trans-buttons">
-        <Button :onclick="timePlus" icon="pi pi-plus" />
-        <Button :onclick="timeMinus" icon="pi pi-minus" />
+    <div v-if="props.isInput">
+        <Calendar v-model="date" dateFormat="yy/mm/dd" showButtonBar />
+        <div class="trans-buttons">
+            <Button :onclick="timePlus" icon="pi pi-plus" />
+            <Button :onclick="timeMinus" icon="pi pi-minus" />
+        </div>
+        <div class="times" v-for="range in workTimes">
+            <Calendar v-model="range.from" timeOnly />
+            <Calendar v-model="range.to" timeOnly />
+        </div>
     </div>
-    <div class="times" v-for="range in workTimes">
-        <Calendar v-model="range.from" timeOnly />
-        <Calendar v-model="range.to" timeOnly />
+    <div v-else>
+        <p>{{ props.store.workDate.display || "--/--" }}</p>
+        <div v-if="props.store.workTimeRange.length > 0">
+            <div v-for="range in props.store.workTimeRange">
+                <p>
+                    {{ range.from.display }}<span>~</span>{{ range.to.display }}
+                </p>
+            </div>
+        </div>
+        <div v-else>
+            <p>--<span> ~ </span>--</p>
+        </div>
     </div>
 </template>

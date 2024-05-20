@@ -6,6 +6,7 @@ import type { Task } from "../../../stores/types";
 const props = defineProps<{
     tasks: Task[];
     inActive?: "pending"[];
+    isInput: boolean;
 }>();
 
 const isActive = ref({
@@ -33,14 +34,23 @@ const taskMinus = () => {
 };
 </script>
 <template>
-    <div class="trans-buttons">
-        <Button :onclick="taskPlus" icon="pi pi-plus" />
-        <Button :onclick="taskMinus" icon="pi pi-minus" />
+    <div v-if="props.isInput">
+        <div class="trans-buttons">
+            <Button :onclick="taskPlus" icon="pi pi-plus" />
+            <Button :onclick="taskMinus" icon="pi pi-minus" />
+        </div>
+        <div class="tasks" v-for="task in props.tasks">
+            <InputText type="text" v-model="task.title" />
+            <p v-if="isActive.pending">{{ task.pending }}</p>
+            <Slider v-if="isActive.pending" v-model="task.pending" />
+            <Textarea v-model="task.detail" rows="5" cols="30" />
+        </div>
     </div>
-    <div class="tasks" v-for="task in props.tasks">
-        <InputText type="text" v-model="task.title" />
-        <p v-if="isActive.pending">{{ task.pending }}</p>
-        <Slider v-if="isActive.pending" v-model="task.pending" />
-        <Textarea v-model="task.detail" rows="5" cols="30" />
+    <div v-else>
+        <div v-for="task in props.tasks">
+            <p>{{ task.title }}</p>
+            <p v-if="isActive.pending">{{ task.pending }}</p>
+            <p>{{ task.detail }}</p>
+        </div>
     </div>
 </template>

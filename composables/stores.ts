@@ -23,14 +23,14 @@ export const translateDetailsWorkDate = (
 };
 
 /**
- * WorkTimeRangeの日付を{Date, String}に変換する
- * @param WorkTimeRange
+ * workTimeRangeの日付を{Date, String}に変換する
+ * @param workTimeRange
  * @returns
  */
 export const translateDetailsWorkTime = (
-    WorkTimeRange: WorkTimeRange[]
+    workTimeRange: WorkTimeRange[]
 ): WorkTimeDetailsTypeRange[] => {
-    return WorkTimeRange.map((range) => {
+    return workTimeRange.map((range) => {
         return {
             from: validDetailsForTime(range.from),
             to: validDetailsForTime(range.to),
@@ -48,7 +48,7 @@ const validDetailsForTime = (dateString: string): DateDetails => {
     const isDate = checkValidDate(inputDate);
 
     const date = isDate ? inputDate : null;
-    const display = isDate ? formatToYYYYMMDD(inputDate) : "";
+    const display = isDate ? formatToHHMM(inputDate) : "";
 
     return { date, display };
 };

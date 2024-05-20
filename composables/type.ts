@@ -10,9 +10,10 @@ export type DisplayWorkTimeRange = {
 
 export type WorkDateTimeProps = {
     store: {
-        WorkDate: DateDetails;
-        WorkTimeRange: WorkTimeDetailsTypeRange[];
+        workDate: DateDetails;
+        workTimeRange: WorkTimeDetailsTypeRange[];
         updateWorkDate: (date: Date) => void;
         updateWorkTimeRange: (workTimesDate: DisplayWorkTimeRange[]) => void;
     };
+    isInput: boolean
 };
