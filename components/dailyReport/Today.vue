@@ -12,37 +12,73 @@ const props = defineProps<{
 const store = useTodayWorkStore();
 const {
     projectName,
-    todayWorkDateDetails,
-    todayWorkTimeRangeDetails,
+    todayWorkDateAsDate,
+    todayWorkDateAsYYYYMMDD,
+    todayWorkTimeRangeAsDate,
+    todayWorkTimeRangeAsHHMM,
     todayTasks,
 } = storeToRefs(store);
 
 // storeをpropsに渡せるように成型
 const workDateTimeStore: WorkDateTimeProps["store"] = {
-    workDate: todayWorkDateDetails.value,
-    workTimeRange: todayWorkTimeRangeDetails.value,
+    workDateAsDate: todayWorkDateAsDate,
+    workDateAsYYYYMMDD: todayWorkDateAsYYYYMMDD,
+    workTimeRangeAsDate: todayWorkTimeRangeAsDate,
+    workTimeRangeAsHHMM: todayWorkTimeRangeAsHHMM,
     updateWorkDate: store.updateTodayWorkDate,
     updateWorkTimeRange: store.updateTodayWorkTime,
 };
-
-// テスト。
-const resetStore = () => {
-    store.initializeUseTodayWorkStore();
-};
 </script>
 <template>
-    <p>1. プロジェクト名</p>
-    <div v-if="props.isInput">
-        <InputText type="text" v-model="projectName" />
+    <div class="today" :class="props.isInput ? 'wide' : 'thin'">
+        <div class="row-1">
+            <div class="project">
+                <p>1. プロジェクト名</p>
+                <div v-if="props.isInput">
+                    <InputText type="text" v-model="projectName" />
+                </div>
+                <div v-else>
+                    <p>{{ projectName }}</p>
+                </div>
+            </div>
+            <div class="work-date-time">
+                <DailyReportChildsWorkDateTime
+                    index="2"
+                    title="作業日時"
+                    :store="workDateTimeStore"
+                    :isInput="props.isInput"
+                />
+            </div>
+        </div>
+        <div class="tasks">
+            <DailyReportChildsTasks
+                index="3"
+                title="作業内容"
+                :tasks="todayTasks"
+                :isInput="props.isInput"
+            />
+        </div>
     </div>
-    <div v-else>
-        <p>{{ projectName }}</p>
-    </div>
-    <p>2. 作業日</p>
-    <DailyReportChildsWorkDateTime
-        :store="workDateTimeStore"
-        :isInput="props.isInput"
-    />
-    <p>3. 作業内容</p>
-    <DailyReportChildsTasks :tasks="todayTasks" :isInput="props.isInput" />
 </template>
+
+<style scoped>
+.today {
+    height: 100%;
+}
+.wide {
+    width: 60%;
+}
+.thin {
+    width: 20%;
+}
+
+.row-1 {
+    display: flex;
+    justify-content: space-between;
+    height: 40%;
+}
+
+.tasks {
+    height: 60%;
+}
+</style>

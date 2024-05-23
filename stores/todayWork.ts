@@ -11,29 +11,35 @@ import {
     translateDetailsWorkTime,
 } from "../composables/stores";
 import { DisplayWorkTimeRange } from "../composables/type";
+import {
+    checkValidDate,
+    formatToHHMM,
+    formatToYYYYMMDD,
+    translateDate,
+} from "../composables/date";
 
 type TodayWorkValuesType = {
-    projectName: string;
-    todayWorkDate: string;
-    todayWorkTimeRange: WorkTimeRange[];
-    todayTasks: TodayTask[];
+    projectName: Ref<string>;
+    todayWorkDate: Ref<string>;
+    todayWorkTimeRange: Ref<WorkTimeRange[]>;
+    todayTasks: Ref<TodayTask[]>;
     initializeUseTodayWorkStore: () => void;
-    todayWorkDateDetails: DateDetails;
-    todayWorkTimeRangeDetails: WorkTimeDetailsTypeRange[];
+    todayWorkDateAsDate: ComputedRef<Date | null>;
+    todayWorkDateAsYYYYMMDD: ComputedRef<string>;
+    todayWorkTimeRangeAsDate: ComputedRef<DisplayWorkTimeRange[]>;
+    todayWorkTimeRangeAsHHMM: ComputedRef<WorkTimeRange[]>;
     updateTodayWorkDate: (date: Date) => void;
     updateTodayWorkTime: (workTimesDate: DisplayWorkTimeRange[]) => void;
 };
 
 export const useTodayWorkStore = defineStore(
     "todayWork",
-    () => {
-        const projectName: Ref<TodayWorkValuesType["projectName"]> = ref("");
-        const todayWorkDate: Ref<TodayWorkValuesType["todayWorkDate"]> =
-            ref("");
-        const todayWorkTimeRange: Ref<
-            TodayWorkValuesType["todayWorkTimeRange"]
-        > = ref([]);
-        const todayTasks: Ref<TodayWorkValuesType["todayTasks"]> = ref([]);
+    (): TodayWorkValuesType => {
+        const projectName: TodayWorkValuesType["projectName"] = ref("");
+        const todayWorkDate: TodayWorkValuesType["todayWorkDate"] = ref("");
+        const todayWorkTimeRange: TodayWorkValuesType["todayWorkTimeRange"] =
+            ref([]);
+        const todayTasks: TodayWorkValuesType["todayTasks"] = ref([]);
 
         /**
          * useTodayWorkStoreのすべての値を初期化する
@@ -47,22 +53,47 @@ export const useTodayWorkStore = defineStore(
             };
 
         /**
-         * todayWorkDateをDateとStringそれぞれに変換してを返却する
+         * todayWorkDateをDate型で返却する
          */
-        const todayWorkDateDetails: ComputedRef<
-            TodayWorkValuesType["todayWorkDateDetails"]
-        > = computed(() => {
-            return translateDetailsWorkDate(todayWorkDate.value);
-        });
+        const todayWorkDateAsDate: TodayWorkValuesType["todayWorkDateAsDate"] =
+            computed(() => translateDate(todayWorkDate.value));
+        /**
+         * todayWorkDateをString型で返却する
+         */
+        const todayWorkDateAsYYYYMMDD: TodayWorkValuesType["todayWorkDateAsYYYYMMDD"] =
+            computed(() => {
+                const date = translateDate(todayWorkDate.value);
+                return date ? formatToYYYYMMDD(date) : "";
+            });
 
         /**
-         * todayWorkTimeRangeをDateとStringそれぞれに変換してを返却する
+         * todayWorkTimeRangeをDate型で返却する
          */
-        const todayWorkTimeRangeDetails: ComputedRef<
-            TodayWorkValuesType["todayWorkTimeRangeDetails"]
-        > = computed(() => {
-            return translateDetailsWorkTime(todayWorkTimeRange.value);
-        });
+        const todayWorkTimeRangeAsDate: TodayWorkValuesType["todayWorkTimeRangeAsDate"] =
+            computed(() => {
+                return todayWorkTimeRange.value.map((range) => ({
+                    from: translateDate(range.from),
+                    to: translateDate(range.to),
+                }));
+            });
+        /**
+         * todayWorkTimeRangeをDate型で返却する
+         */
+        const todayWorkTimeRangeAsHHMM: TodayWorkValuesType["todayWorkTimeRangeAsHHMM"] =
+            computed(() => {
+                return todayWorkTimeRange.value.map((range) => {
+                    const fromDate = translateDate(range.from);
+                    const from = fromDate ? formatToHHMM(fromDate) : "";
+
+                    const fromTo = translateDate(range.to);
+                    const to = fromTo ? formatToHHMM(fromTo) : "";
+
+                    return {
+                        from,
+                        to,
+                    };
+                });
+            });
 
         /**
          * フォームからの作業日の入力値をフォーマットしてtodayWorkDateを更新する
@@ -92,8 +123,10 @@ export const useTodayWorkStore = defineStore(
             todayWorkTimeRange,
             todayTasks,
             initializeUseTodayWorkStore,
-            todayWorkDateDetails,
-            todayWorkTimeRangeDetails,
+            todayWorkDateAsDate,
+            todayWorkDateAsYYYYMMDD,
+            todayWorkTimeRangeAsDate,
+            todayWorkTimeRangeAsHHMM,
             updateTodayWorkDate,
             updateTodayWorkTime,
         };

@@ -10,28 +10,15 @@ import type {
 const props = defineProps<WorkDateTimeProps>();
 
 onMounted(() => {
-    if (!props.isInput) return;
-
     // 作業日を初期化
-    const dateTypeDate = props.store.workDate.date;
+    const dateTypeDate = props.store.workDateAsDate.value;
     if (dateTypeDate === null) {
         // 無効な値だった場合は現在日時で更新する
         const now = new Date();
         props.store.updateWorkDate(now);
         date.value = now;
-    } else {
-        date.value = dateTypeDate;
     }
 
-    // storeの作業時間を表示用に成型
-    // storeの作業時間の内、from,toどちらもnullのものは除外
-    workTimes.value = props.store.workTimeRange
-        .map((range) => {
-            const from = range.from.date;
-            const to = range.to.date;
-            return { from, to };
-        })
-        .filter((range) => range.from !== null || range.to !== null);
     // 作業時間を初期化
     if (workTimes.value.length === 0) {
         // ストアに何もなかったら現在日時で初期化
@@ -47,10 +34,10 @@ onMounted(() => {
 });
 
 /** 作業日 */
-const date: Ref<Date | undefined> = ref(undefined);
+const date: Ref<Date | null> = ref(props.store.workDateAsDate.value);
 watch(date, (newDate) => {
     // 作業日に変更があったらStoreを更新
-    if (newDate === undefined) {
+    if (newDate === null) {
         throw createError({
             statusCode: 400,
             statusMessage: "Bad Request",
@@ -59,8 +46,12 @@ watch(date, (newDate) => {
     props.store.updateWorkDate(newDate);
 });
 
+// storeの作業時間の内、from,toどちらもnullのものは除外
+const filteredWorkTime = props.store.workTimeRangeAsDate.value.filter(
+    (range) => range.from !== null || range.to !== null
+);
 /** 作業時間配列 */
-const workTimes: Ref<DisplayWorkTimeRange[]> = ref([]);
+const workTimes: Ref<DisplayWorkTimeRange[]> = ref(filteredWorkTime);
 watch(
     workTimes,
     (newAry) => {
@@ -82,24 +73,31 @@ const timeMinus = () => {
 </script>
 
 <template>
-    <div v-if="props.isInput">
-        <Calendar v-model="date" dateFormat="yy/mm/dd" showButtonBar />
-        <div class="trans-buttons">
-            <Button :onclick="timePlus" icon="pi pi-plus" />
-            <Button :onclick="timeMinus" icon="pi pi-minus" />
+    <div class="date-time" v-if="props.isInput">
+        <div class="title">
+            <p>{{ props.index }}. {{ props.title }}</p>
+            <DailyReportChildsFormStepper @plus="timePlus" @minus="timeMinus" />
         </div>
-        <div class="times" v-for="range in workTimes">
-            <Calendar v-model="range.from" timeOnly />
-            <Calendar v-model="range.to" timeOnly />
+        <Calendar
+            class="date"
+            v-model="date"
+            dateFormat="yy/mm/dd"
+            showButtonBar
+        />
+        <div class="times">
+            <div v-for="range in workTimes">
+                <Calendar v-model="range.from" timeOnly />
+                <span>~</span>
+                <Calendar v-model="range.to" timeOnly />
+            </div>
         </div>
     </div>
-    <div v-else>
-        <p>{{ props.store.workDate.display || "--/--" }}</p>
-        <div v-if="props.store.workTimeRange.length > 0">
-            <div v-for="range in props.store.workTimeRange">
-                <p>
-                    {{ range.from.display }}<span>~</span>{{ range.to.display }}
-                </p>
+    <div class="date-time" v-else>
+        <p>{{ props.index }}. {{ props.title }}</p>
+        <p>{{ props.store.workDateAsYYYYMMDD.value || "--/--" }}</p>
+        <div v-if="props.store.workTimeRangeAsHHMM.value.length > 0">
+            <div v-for="range in props.store.workTimeRangeAsHHMM.value">
+                <p>{{ range.from }}<span>~</span>{{ range.to }}</p>
             </div>
         </div>
         <div v-else>
@@ -107,3 +105,22 @@ const timeMinus = () => {
         </div>
     </div>
 </template>
+
+<style scoped>
+.date-time {
+    height: 100%;
+}
+.title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    height: 10%;
+}
+.date {
+    /* height: 20%; */
+}
+.times {
+    overflow-y: auto;
+    height: 70%;
+}
+</style>

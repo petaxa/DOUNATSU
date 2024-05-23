@@ -3,7 +3,6 @@
  * @param date
  */
 export const formatToYYYYMMDD = (date: Date) => {
-    console.log("check formatToStoreStringDate", date);
     const yyyy = paddingDatePart(date.getFullYear(), 4);
     const mm = paddingDatePart(date.getMonth() + 1, 2);
     const dd = paddingDatePart(date.getDate(), 2);
@@ -22,24 +21,15 @@ export const formatToHHMM = (date: Date) => {
 };
 
 /**
- * Storeに保存されているDate, TimeをDate型に変換する
- * 正常なDateに変換できなかった場合はnullとする
- * 片方のみでも受け付ける。
- * Timeのみの場合、日付はダミー(2022-11-16固定)
- * @param storeDate
- * @param storeTime
+ * string型のDateに変換可能なを安全にDate型に変換する
+ * @param dateString
+ * @returns
  */
-export const translateStoreDateToDate = (
-    storeDate?: string,
-    storeTime?: string
-) => {
-    const dateString = storeDate ?? "2022-11-16";
-    const timeString = storeTime ?? "";
+export const translateDate = (dateString: string) => {
+    const workDate = new Date(dateString);
+    const isDate = checkValidDate(workDate);
 
-    const date = new Date(`${dateString} ${timeString}`.trim());
-    const isValid = !isNaN(date.getTime());
-
-    return isValid ? date : null;
+    return isDate ? workDate : null;
 };
 
 /**
