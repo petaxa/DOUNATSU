@@ -1,8 +1,6 @@
-import { DateDetails, WorkTimeDetailsTypeRange } from "../stores/types";
+import { ComputedRef } from "vue";
+import { WorkTimeRange } from "../stores/types";
 
-/**
- *
- */
 export type DisplayWorkTimeRange = {
     from: Date | null;
     to: Date | null;
@@ -10,10 +8,14 @@ export type DisplayWorkTimeRange = {
 
 export type WorkDateTimeProps = {
     store: {
-        workDate: DateDetails;
-        workTimeRange: WorkTimeDetailsTypeRange[];
+        workDateAsDate: ComputedRef<Date | null>;
+        workDateAsYYYYMMDD: ComputedRef<string>;
+        workTimeRangeAsDate: ComputedRef<DisplayWorkTimeRange[]>;
+        workTimeRangeAsHHMM: ComputedRef<WorkTimeRange[]>;
         updateWorkDate: (date: Date) => void;
         updateWorkTimeRange: (workTimesDate: DisplayWorkTimeRange[]) => void;
     };
-    isInput: boolean
+    index: string;
+    title: string;
+    isInput: boolean;
 };

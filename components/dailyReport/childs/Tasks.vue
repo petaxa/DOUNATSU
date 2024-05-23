@@ -6,6 +6,8 @@ import type { Task } from "../../../stores/types";
 const props = defineProps<{
     tasks: Task[];
     inActive?: "pending"[];
+    index: string;
+    title: string;
     isInput: boolean;
 }>();
 
@@ -34,23 +36,110 @@ const taskMinus = () => {
 };
 </script>
 <template>
-    <div v-if="props.isInput">
-        <div class="trans-buttons">
-            <Button :onclick="taskPlus" icon="pi pi-plus" />
-            <Button :onclick="taskMinus" icon="pi pi-minus" />
+    <div class="outer">
+        <div class="tasks" v-if="props.isInput">
+            <div class="input-row-1 title">
+                <p>{{ props.index }}. {{ props.title }}</p>
+                <DailyReportChildsFormStepper
+                    @plus="taskPlus"
+                    @minus="taskMinus"
+                />
+            </div>
+            <div class="inputs">
+                <div v-for="(task, i) in props.tasks">
+                    <div class="first-row">
+                        <div class="input-title">
+                            <p>{{ index }}-{{ i + 1 }}.</p>
+                            <InputText type="text" v-model="task.title" />
+                        </div>
+                        <div class="pending">
+                            <p v-if="isActive.pending">{{ task.pending }}</p>
+                            <Slider
+                                v-if="isActive.pending"
+                                v-model="task.pending"
+                            />
+                        </div>
+                    </div>
+                    <Textarea
+                        class="detail"
+                        v-model="task.detail"
+                        rows="5"
+                        cols="30"
+                    />
+                </div>
+            </div>
         </div>
-        <div class="tasks" v-for="task in props.tasks">
-            <InputText type="text" v-model="task.title" />
-            <p v-if="isActive.pending">{{ task.pending }}</p>
-            <Slider v-if="isActive.pending" v-model="task.pending" />
-            <Textarea v-model="task.detail" rows="5" cols="30" />
-        </div>
-    </div>
-    <div v-else>
-        <div v-for="task in props.tasks">
-            <p>{{ task.title }}</p>
-            <p v-if="isActive.pending">{{ task.pending }}</p>
-            <p>{{ task.detail }}</p>
+        <div class="tasks" v-else>
+            <p class="title">{{ props.index }}. {{ props.title }}</p>
+            <div class="inputs">
+                <div v-for="(task, i) in props.tasks">
+                    <p>{{ index }}-{{ i + 1 }}. {{ task.title }}</p>
+                    <p v-if="isActive.pending && task.pending > 0">
+                        {{ task.pending }}
+                    </p>
+                    <p class="text-detail">{{ task.detail }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+Textarea {
+    height: 8rem;
+}
+
+.input-row-1 {
+    display: flex;
+    align-items: center;
+}
+
+.first-row {
+    display: flex;
+    align-items: first;
+    margin: 1rem 0;
+}
+
+.pending {
+    width: 35%;
+}
+.pending > p {
+    margin-bottom: 0.3rem;
+}
+
+.input-title {
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
+.input-title > .p-inputtext {
+    width: 80%;
+}
+.input-title > p {
+    margin: 0.5rem;
+}
+
+.detail {
+    width: 95%;
+    margin-left: 2.5rem;
+}
+
+.text-detail {
+    overflow-wrap: break-word;
+    word-break: auto-phrase;
+}
+
+.title {
+    height: 5%;
+}
+.inputs {
+    overflow-y: auto;
+    height: 95%;
+}
+.outer {
+    height: 100%;
+}
+.tasks {
+    height: 100%;
+}
+</style>

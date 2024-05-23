@@ -1,3 +1,8 @@
+<script setup lang="ts">
+definePageMeta({
+    layout: false,
+});
+</script>
 <template>
     <main>
         <section class="content-wrap">
@@ -5,10 +10,16 @@
                 <h1 class="app-title">DORTS</h1>
                 <nav class="contents-nav">
                     <NuxtLink to="/daily-report">
-                        <Button class="p-button-lg content-button" label="日報作成" />
+                        <Button
+                            class="p-button-lg content-button"
+                            label="日報作成"
+                        />
                     </NuxtLink>
                     <NuxtLink to="/">
-                        <Button class="p-button-lg content-button" label="作業開始文言作成" />
+                        <Button
+                            class="p-button-lg content-button"
+                            label="作業開始文言作成"
+                        />
                     </NuxtLink>
                 </nav>
             </div>
