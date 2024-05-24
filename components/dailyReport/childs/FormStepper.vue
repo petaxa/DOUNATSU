@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const emit = defineEmits(["plus", "minus"]);
+const emits = defineEmits(["plus", "minus"]);
 
 const clickPlus = () => {
-    emit("plus");
+    emits("plus");
 };
 const clickMinus = () => {
-    emit("minus");
+    emits("minus");
 };
 </script>
 

@@ -5,7 +5,7 @@ import type { Task } from "../../../stores/types";
 // inActiveに登録されているものは外して処理を行う。
 const props = defineProps<{
     tasks: Task[];
-    inActive?: "pending"[];
+    inActive?: ("pending" | "details")[];
     index: string;
     title: string;
     isInput: boolean;
@@ -13,6 +13,7 @@ const props = defineProps<{
 
 const isActive = ref({
     pending: true,
+    details: true,
 });
 onMounted(() => {
     // コンテンツのアクティブを判定
@@ -20,6 +21,10 @@ onMounted(() => {
         switch (content) {
             case "pending":
                 isActive.value.pending = false;
+                break;
+            case "details":
+                isActive.value.details = false;
+                break;
         }
     });
 });
@@ -61,6 +66,7 @@ const taskMinus = () => {
                         </div>
                     </div>
                     <Textarea
+                        v-if="isActive.details"
                         class="detail"
                         v-model="task.detail"
                         rows="5"
@@ -74,10 +80,16 @@ const taskMinus = () => {
             <div class="inputs">
                 <div v-for="(task, i) in props.tasks">
                     <p>{{ index }}-{{ i + 1 }}. {{ task.title }}</p>
-                    <p v-if="isActive.pending && task.pending > 0">
+                    <p
+                        v-if="
+                            isActive.pending && task.pending && task.pending > 0
+                        "
+                    >
                         {{ task.pending }}
                     </p>
-                    <p class="text-detail">{{ task.detail }}</p>
+                    <p v-if="isActive.details" class="text-detail">
+                        {{ task.detail }}
+                    </p>
                 </div>
             </div>
         </div>

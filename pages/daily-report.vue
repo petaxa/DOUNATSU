@@ -69,10 +69,10 @@ const clickCreate = () => {
             <dailyReportNextDay :isInput="!isToday" />
         </section>
         <section class="controllers">
-            <div class="buttons">
-                <Button label="クリア" @click="clickClear" />
-                <Button label="作成" @click="clickCreate" />
-            </div>
+            <DailyReportChildsFormControllers
+                @clear="clickClear"
+                @create="clickCreate"
+            />
         </section>
     </div>
     <Dialog
@@ -121,21 +121,6 @@ const clickCreate = () => {
 .controllers {
     position: fixed;
     top: 90%;
-    height: 10%;
-    width: 100%;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-}
-.buttons {
-    margin-right: 3%;
-    width: 20%;
-    display: flex;
-    justify-content: space-between;
-}
-.buttons > .p-button {
-    height: 3rem;
-    width: 10rem;
 }
 .dialog-text {
     white-space: pre-wrap;

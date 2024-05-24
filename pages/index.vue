@@ -15,7 +15,7 @@ definePageMeta({
                             label="日報作成"
                         />
                     </NuxtLink>
-                    <NuxtLink to="/">
+                    <NuxtLink to="/start-report">
                         <Button
                             class="p-button-lg content-button"
                             label="作業開始文言作成"
