@@ -39,7 +39,6 @@ const clickCreate = () => {
         nextDayWorkTimeRangeAsHHMM.value,
         nextDayTasks.value
     );
-    console.log(text);
 
     dialog.value = createStartReport(
         nextDayWorkTimeRangeAsHHMM.value,
@@ -97,7 +96,7 @@ const clickCreate = () => {
         <p class="dialog-text">{{ dialog.workTime }}</p>
         <p class="dialog-text" v-html="dialog.tasks.replace('\n', '<br>')"></p>
     </Dialog>
-    <Toast baseZIndex="9999999999999999" />
+    <Toast :baseZIndex="9999999999999999" />
 </template>
 
 <style scoped>
@@ -124,6 +123,7 @@ const clickCreate = () => {
 .controllers {
     position: fixed;
     top: 90%;
+    width: 100%;
 }
 .dialog-text {
     white-space: pre-wrap;

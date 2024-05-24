@@ -93,7 +93,7 @@ const clickCreate = () => {
             v-html="dialog.nextDayTasks.replace('\n', '<br>')"
         ></p>
     </Dialog>
-    <Toast baseZIndex="9999999999999999" />
+    <Toast :baseZIndex="9999999999999999" />
 </template>
 
 <style scoped>
@@ -121,6 +121,7 @@ const clickCreate = () => {
 .controllers {
     position: fixed;
     top: 90%;
+    width: 100%;
 }
 .dialog-text {
     white-space: pre-wrap;
