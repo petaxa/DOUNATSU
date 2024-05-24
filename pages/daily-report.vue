@@ -4,6 +4,7 @@ import { useNextDayWorkStore } from "../stores/nextDayWork";
 import { useTodayWorkStore } from "../stores/todayWork";
 import { createDailyReport } from "../composables/dailyReport";
 import { useToast } from "primevue/usetoast";
+import { storeToRefs } from "pinia";
 
 const isToday = computed(() =>
     selectedOptions.value === "作業実績" ? true : false
@@ -30,15 +31,23 @@ const dialog = ref({
 });
 const dialogVisible = ref(false);
 const toast = useToast();
+const {
+    projectName,
+    todayWorkDateAsYYYYMMDD,
+    todayWorkTimeRangeAsHHMM,
+    todayTasks,
+} = storeToRefs(storeToday);
+const { nextDayWorkDateAsYYYYMMDD, nextDayWorkTimeRangeAsHHMM, nextDayTasks } =
+    storeToRefs(storeNextDay);
 const clickCreate = () => {
     const input = {
-        projectName: storeToday.projectName,
-        todayDateAsYYYYMMDD: storeToday.todayWorkDateAsYYYYMMDD,
-        todayTimesAsHHMM: storeToday.todayWorkTimeRangeAsHHMM,
-        todayTasks: storeToday.todayTasks,
-        nextDayDateAsYYYYMMDD: storeNextDay.nextDayWorkDateAsYYYYMMDD,
-        nextDayTimesAsHHMM: storeNextDay.nextDayWorkTimeRangeAsHHMM,
-        nextDayTasks: storeNextDay.nextDayTasks,
+        projectName: projectName.value,
+        todayDateAsYYYYMMDD: todayWorkDateAsYYYYMMDD.value,
+        todayTimesAsHHMM: todayWorkTimeRangeAsHHMM.value,
+        todayTasks: todayTasks.value,
+        nextDayDateAsYYYYMMDD: nextDayWorkDateAsYYYYMMDD.value,
+        nextDayTimesAsHHMM: nextDayWorkTimeRangeAsHHMM.value,
+        nextDayTasks: nextDayTasks.value,
     };
     dialog.value = createDailyReport(input);
     dialogVisible.value = true;
