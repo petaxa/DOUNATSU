@@ -7,7 +7,7 @@ import { useToast } from "primevue/usetoast";
 const settings = useSettingsStore();
 
 const { initialTaskInputCount } = storeToRefs(settings);
-// TODO: 設定変数が更新されたらtoastでその旨を表示する
+// 設定変数が更新されたらtoastでその旨を表示する
 const toast = useToast();
 watch(initialTaskInputCount, (newCount) => {
     toast.add({
