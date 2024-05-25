@@ -7,7 +7,6 @@
 ```Ts
 type useSettingStore = {
     initialTaskInputCount: number,
-    isTaskAutoFillEnabled: boolean,
 }
 ```
 
@@ -16,10 +15,6 @@ type useSettingStore = {
 #### initialTaskInputCount
 
 型: number
-
-#### isTaskAutoFillEnabled
-
-型: boolean
 
 ---
 

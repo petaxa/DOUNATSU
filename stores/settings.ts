@@ -5,7 +5,8 @@ export const useSettingsStore = defineStore(
     "settings",
     () => {
         const initialTaskInputCount = ref(0);
-        const isTaskAutoFillEnabled = ref(true);
+
+        return { initialTaskInputCount };
     },
     {
         persist: true,
