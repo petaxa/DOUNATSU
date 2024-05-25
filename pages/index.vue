@@ -26,7 +26,9 @@ definePageMeta({
         </section>
         <footer>
             <div class="sub-icons">
-                <Button icon="pi pi-cog" />
+                <NuxtLink to="/settings">
+                    <Button icon="pi pi-cog" />
+                </NuxtLink>
                 <Button icon="pi pi-github" />
             </div>
         </footer>
