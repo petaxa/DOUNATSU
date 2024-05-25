@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import type { Task } from "../../../stores/types";
+import { useSettingsStore } from "../../../stores/settings";
+import { storeToRefs } from "pinia";
 
 // inActiveに登録されているものは外して処理を行う。
 const props = defineProps<{
@@ -15,6 +17,11 @@ const isActive = ref({
     pending: true,
     details: true,
 });
+
+// 設定読み込み
+const settings = useSettingsStore();
+const { initialTaskInputCount } = storeToRefs(settings);
+
 onMounted(() => {
     // コンテンツのアクティブを判定
     props.inActive?.forEach((content) => {
@@ -27,6 +34,15 @@ onMounted(() => {
                 break;
         }
     });
+
+    // デフォルト表示個数まで充填
+    while (props.tasks.length < initialTaskInputCount.value) {
+        props.tasks.push({
+            title: "",
+            pending: isActive.value.pending ? 0 : undefined,
+            detail: "",
+        });
+    }
 });
 
 const taskPlus = () => {
