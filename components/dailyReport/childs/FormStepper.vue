@@ -18,7 +18,7 @@ const clickMinus = () => {
 
 <style scoped>
 .trans-buttons {
-    width: 15%;
+    width: 15rem;
     display: flex;
     justify-content: space-around;
 }

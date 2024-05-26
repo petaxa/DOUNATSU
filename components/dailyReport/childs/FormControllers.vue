@@ -34,6 +34,6 @@ const clickCreate = () => {
 }
 .buttons > .p-button {
     height: 3rem;
-    width: 10rem;
+    width: 45%;
 }
 </style>
