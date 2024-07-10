@@ -1,13 +1,13 @@
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    devtools: { enabled: true },
+    devtools: { enabled: false },
     modules: [
         "nuxt-primevue",
         "@nuxt/test-utils/module",
         "@pinia/nuxt",
         "@pinia-plugin-persistedstate/nuxt",
-        // "nuxt-electron",
+        "nuxt-electron",
     ],
 
     primevue: {
@@ -22,13 +22,13 @@ export default defineNuxtConfig({
     ],
 
     // NOTE: electronの環境を使いたかったら有効化する。
-    // electron: {
-    //     build: [
-    //         {
-    //             entry: "electron/main.ts",
-    //         },
-    //     ],
-    // },
+    electron: {
+        build: [
+            {
+                entry: "electron/main.ts",
+            },
+        ],
+    },
     ssr: false,
 
     typescript: {
