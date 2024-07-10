@@ -3,24 +3,34 @@ import { storeToRefs } from "pinia";
 import type { WorkDateTimeProps } from "../composables/type";
 import { useNextDayWorkStore } from "../stores/nextDayWork";
 import { createStartReport } from "../composables/startReport";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
-const store = useNextDayWorkStore();
+import { useTodayWorkStore } from "../stores/todayWork";
+const storeNextDay = useNextDayWorkStore();
 const {
     nextDayWorkDateAsDate,
     nextDayWorkDateAsYYYYMMDD,
     nextDayWorkTimeRangeAsDate,
     nextDayWorkTimeRangeAsHHMM,
     nextDayTasks,
-} = storeToRefs(store);
+} = storeToRefs(storeNextDay);
 const workDateTimeStore: WorkDateTimeProps["store"] = {
     workDateAsDate: nextDayWorkDateAsDate,
     workDateAsYYYYMMDD: nextDayWorkDateAsYYYYMMDD,
     workTimeRangeAsDate: nextDayWorkTimeRangeAsDate,
     workTimeRangeAsHHMM: nextDayWorkTimeRangeAsHHMM,
-    updateWorkDate: store.updateNextDayWorkDate,
-    updateWorkTimeRange: store.updateNextDayWorkTime,
+    updateWorkDate: storeNextDay.updateNextDayWorkDate,
+    updateWorkTimeRange: storeNextDay.updateNextDayWorkTime,
 };
+
+// storeの値とページ内の値、ちゃんと分けよう。
+
+const storeToday = useTodayWorkStore();
+const tasks = ref(nextDayTasks.value.map((task) => ({ ...task })));
+watch(tasks.value, (newTasks) => {
+    storeNextDay.initializeUseNextDayWorkStore();
+    storeToday.todayTasks = newTasks.map((task) => ({ ...task, pending: 0 }));
+});
 
 // 本文を作成
 const dialog = ref({
@@ -32,21 +42,31 @@ const dialogVisible = ref(false);
 const toast = useToast();
 
 const clickClear = () => {
-    store.initializeUseNextDayWorkStore();
+    storeNextDay.initializeUseNextDayWorkStore();
 };
 const clickCreate = () => {
-    const text = createStartReport(
-        nextDayWorkTimeRangeAsHHMM.value,
-        nextDayTasks.value
-    );
+    // 日報作成のストアを全部クリア
+    storeToday.initializeUseTodayWorkStore();
+    storeNextDay.initializeUseNextDayWorkStore();
 
-    dialog.value = createStartReport(
-        nextDayWorkTimeRangeAsHHMM.value,
-        nextDayTasks.value
-    );
-    dialogVisible.value = true;
+    // 日報作成の当日作業に作業予定を格納
+    storeToday.todayTasks = tasks.value.map((task) => ({
+        ...task,
+        detail: "",
+        pending: 0,
+    }));
+
+    // クリップボードにコピー
     navigator.clipboard.writeText(dialog.value.copiedText);
 
+    // ダイアログ表示
+    dialog.value = createStartReport(
+        nextDayWorkTimeRangeAsHHMM.value,
+        tasks.value
+    );
+    dialogVisible.value = true;
+
+    // トースト表示
     toast.add({
         severity: "success",
         summary: "コピー成功！",
@@ -73,7 +93,7 @@ const clickCreate = () => {
                     <DailyReportChildsTasks
                         index="2"
                         title="作業予定内容"
-                        :tasks="nextDayTasks"
+                        :tasks="tasks"
                         :isInput="true"
                         :inActive="['pending', 'details']"
                     />
