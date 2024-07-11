@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
 
 const now = new Date();
 const date = ref(null);

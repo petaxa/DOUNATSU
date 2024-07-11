@@ -1,46 +1,36 @@
 {
-  "name": "nuxt-app",
+  "name": "DORTS",
   "private": true,
-  "type": "module",
   "main": "dist-electron/main.js",
+  "version": "0.0.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "build:win": "nuxt build --prerender && electron-builder --win",
+    "build:mac": "nuxt build --prerender && electron-builder --mac",
     "electron-dev": "nuxi dev --no-fork",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "story:dev": "histoire dev",
-    "story:build": "histoire build",
-    "story:preview": "histoire preview"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
-    "nuxt": "3.6.5",
+    "nuxt": "^3.12.3",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "primeicons": "^7.0.0",
     "primevue": "^3.52.0",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue-tsc": "^2.0.26"
   },
   "devDependencies": {
-    "@histoire/plugin-nuxt": "^0.17.17",
-    "@histoire/plugin-vue": "^0.17.17",
-    "@nuxt/test-utils": "^3.13.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
-    "@vue/test-utils": "^2.4.6",
     "electron": "^30.0.6",
     "electron-builder": "^24.13.3",
-    "happy-dom": "^14.11.0",
-    "histoire": "^0.17.17",
     "nuxt-electron": "^0.7.0",
     "nuxt-primevue": "^0.3.1",
-    "playwright-core": "^1.44.0",
-    "typescript": "^5.4.5",
     "vite-plugin-electron": "^0.28.7",
-    "vite-plugin-electron-renderer": "^0.14.5",
-    "vitest": "^1.6.0",
-    "vue-tsc": "^1.8.27"
+    "vite-plugin-electron-renderer": "^0.14.5"
   }
 }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
 import type { Task } from "../../../stores/types";
 import { useSettingsStore } from "../../../stores/settings";
 import { storeToRefs } from "pinia";

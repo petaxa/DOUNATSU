@@ -1,14 +1,1 @@
-import { app as o, BrowserWindow as n } from "electron";
-let e;
-const t = () => {
-  e = new n(), process.env.VITE_DEV_SERVER_URL && (e.loadURL(process.env.VITE_DEV_SERVER_URL), e.webContents.openDevTools());
-};
-o.on("window-all-closed", () => {
-  process.platform !== "darwin" && (o.quit(), e = null);
-});
-o.on("activate", () => {
-  n.getAllWindows().length === 0 && t();
-});
-o.whenReady().then(() => {
-  t();
-});
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("electron"),n=require("node:path");process.env.APP_ROOT=n.join(__dirname,"..");const s=n.join(process.env.APP_ROOT,".output/public");process.env.VITE_PUBLIC=process.env.VITE_DEV_SERVER_URL?n.join(process.env.APP_ROOT,"public"):s;let o;const i=()=>{o=new e.BrowserWindow,process.env.VITE_DEV_SERVER_URL?(o.loadURL(process.env.VITE_DEV_SERVER_URL),o.webContents.openDevTools()):o.loadFile(n.join(process.env.VITE_PUBLIC,"index.html"))};e.app.on("window-all-closed",()=>{process.platform!=="darwin"&&(e.app.quit(),o=null)});e.app.on("activate",()=>{e.BrowserWindow.getAllWindows().length===0&&i()});e.app.whenReady().then(()=>{i()});exports.RENDERER_DIST=s;

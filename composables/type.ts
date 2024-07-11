@@ -1,5 +1,4 @@
-import { ComputedRef } from "vue";
-import { WorkTimeRange } from "../stores/types";
+import type { WorkTimeRange } from "../stores/types";
 
 export type DisplayWorkTimeRange = {
     from: Date | null;

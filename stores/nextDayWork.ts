@@ -1,16 +1,6 @@
 import { defineStore } from "pinia";
-import { ComputedRef, Ref, computed, ref } from "vue";
-import {
-    DateDetails,
-    NextTask,
-    WorkTimeDetailsTypeRange,
-    WorkTimeRange,
-} from "./types";
-import {
-    translateDetailsWorkDate,
-    translateDetailsWorkTime,
-} from "../composables/stores";
-import { DisplayWorkTimeRange } from "../composables/type";
+import type { NextTask, WorkTimeRange } from "./types";
+import type { DisplayWorkTimeRange } from "../composables/type";
 import {
     formatToHHMM,
     formatToYYYYMMDD,

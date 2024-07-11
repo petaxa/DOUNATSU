@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { createError } from "nuxt/app";
-import { onMounted, ref, watch } from "vue";
-import type { Ref } from "vue";
 import type {
     DisplayWorkTimeRange,
     WorkDateTimeProps,

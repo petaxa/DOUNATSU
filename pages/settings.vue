@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "../stores/settings";
-import { watch } from "vue";
 import { useToast } from "primevue/usetoast";
 
 const settings = useSettingsStore();

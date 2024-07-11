@@ -1,5 +1,5 @@
 import { checkValidDate } from "./date";
-import { NextTask, TodayTask, WorkTimeRange } from "../stores/types";
+import type { NextTask, TodayTask, WorkTimeRange } from "../stores/types";
 
 export const createDailyReport = (input: {
     projectName: string;

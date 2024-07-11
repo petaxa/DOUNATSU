@@ -1,4 +1,4 @@
-import { NextTask, WorkTimeRange } from "../stores/types";
+import type { NextTask, WorkTimeRange } from "../stores/types";
 
 export const createStartReport = (
     times: WorkTimeRange[],
