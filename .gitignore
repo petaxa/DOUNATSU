@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .vitepress
+release
 
 # Editor directories and files
 .vscode/*

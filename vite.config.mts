@@ -10,7 +10,6 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export default defineConfig(({ mode }) => {
-
   return {
     plugins: [
       vue(),
@@ -26,5 +25,13 @@ export default defineConfig(({ mode }) => {
     server: {
       port: Number(process.env.DEV_SERVER_PORT),
     },
+
+    build: {
+      outDir: "dist/renderer", // 出力ディレクトリ
+      rollupOptions: {
+        external: ["electron"], // electron のモジュールを外部として扱う
+      },
+    },
+    base: "./",
   };
 });

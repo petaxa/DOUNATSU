@@ -7,11 +7,11 @@ function windowControl(action: WindowAction) {
 </script>
 
 <template>
-  <div class="window-controls">
+  <header class="window-controls">
     <i class="pi pi-minus" @click="windowControl('minimize')"></i>
     <i class="pi pi-stop" @click="windowControl('maximize')"></i>
     <i class="pi pi-times" @click="windowControl('close')"></i>
-  </div>
+  </header>
   <RouterView />
 </template>
 
@@ -26,6 +26,7 @@ function windowControl(action: WindowAction) {
   height: 35px;
   width: 100%;
   -webkit-app-region: drag;
+  z-index: 9999;
 }
 
 .window-controls i {

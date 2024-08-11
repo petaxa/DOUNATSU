@@ -12,10 +12,10 @@ function createWindow() {
   console.log("Creating Electron Window...");
 
   mainWindow = new BrowserWindow({
-    width: 1800,
-    height: 1000,
+    width: 1400,
+    height: 880,
     webPreferences: {
-      preload: path.join(__dirname, "../dist/preload.js"),
+      preload: path.join(__dirname, "./preload.js"),
       nodeIntegration: true,
       contextIsolation: true,
     },
@@ -31,7 +31,8 @@ function createWindow() {
     console.log("Lunch Mode: DEV");
   } else {
     // Viteがビルドした静的ファイルをロード
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+    mainWindow.webContents.openDevTools();
     console.log("Lunch Mode: BUILD");
   }
 

@@ -6,7 +6,7 @@
   directories: {
     output: "release/${version}",
   },
-  files: [".output/**/*", "dist-electron"],
+  files: ["dist/**/*"],
   mac: {
     target: ["dmg"],
   },
@@ -17,7 +17,7 @@
         arch: ["x64"],
       },
     ],
-    icon: ".output/public/icon.png",
+    icon: "",
   },
   nsis: {
     oneClick: false,

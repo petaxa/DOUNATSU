@@ -1,13 +1,14 @@
 {
-  "name": "dorts",
+  "name": "dounatsu",
   "private": true,
   "version": "0.0.0",
-  "packageManager": "pnpm@9.5.0",
+  "main": "dist/electron/main.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=\"development\" vite",
-    "build": "vue-tsc -b && vite build",
+    "dev": "set NODE_ENV=development && vite",
+    "build": "set NODE_ENV=production && vue-tsc -b && vite build",
     "preview": "vite preview",
-    "electron": "tsc ./src/electron/main.ts --outDir dist && tsc ./src/electron/preload.ts --outDir dist && set NODE_ENV=development && electron dist/main.js",
+    "electron:dev": "tsc ./src/electron/main.ts --outDir dist/electron && tsc ./src/electron/preload.ts --outDir dist/electron && set NODE_ENV=development && electron dist/electron/main.js",
+    "electron:build": "electron-builder --win",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
@@ -28,6 +29,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "cross-env": "^7.0.3",
     "electron": "^31.2.0",
+    "electron-builder": "^24.13.3",
     "typescript": "^5.5.3",
     "unplugin-vue-components": "^0.27.2",
     "vite": "^5.3.1",
