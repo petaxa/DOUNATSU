@@ -17,7 +17,7 @@
         arch: ["x64"],
       },
     ],
-    icon: "",
+    icon: "dist/renderer/icon.ico",
   },
   nsis: {
     oneClick: false,
