@@ -17,6 +17,7 @@
     "@formkit/tempo": "^0.1.2",
     "@primevue/themes": "^4.0.0",
     "dotenv": "^16.4.5",
+    "electron-updater": "^6.2.1",
     "pinia": "^2.1.7",
     "primeicons": "^7.0.0",
     "primevue": "^4.0.0",

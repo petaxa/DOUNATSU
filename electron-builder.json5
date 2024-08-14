@@ -25,4 +25,11 @@
     allowToChangeInstallationDirectory: true,
     deleteAppDataOnUninstall: true,
   },
+  publish: [
+    {
+      provider: "github",
+      owner: "petaxa",
+      repo: "DOUNATSU",
+    },
+  ],
 }
