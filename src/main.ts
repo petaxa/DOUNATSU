@@ -1,22 +1,20 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import './style.css'
-import './clear.css'
-/* import the fontawesome core */
-import { library } from '@fortawesome/fontawesome-svg-core'
-/* import font awesome icon component */
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-/* import specific icons */
-import { faUserSecret, faCheck } from '@fortawesome/free-solid-svg-icons'
-import { faXmarkCircle, faArrowAltCircleLeft, faCircleLeft } from '@fortawesome/free-regular-svg-icons'
-import { setSetting } from './lib/localStorage'
-/* add icons to the library */
-library.add(faUserSecret, faXmarkCircle, faArrowAltCircleLeft, faCircleLeft, faCheck)
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "@/config/router/index";
+import PrimeVue from "primevue/config";
+import Noir from "@/config/primeVue/index";
+import pinia from "@/config/pinia/index";
+import "primeicons/primeicons.css";
+import ToastService from "primevue/toastservice";
 
-// settingの初期値設定
-setSetting('isAutocomplete', true)
-setSetting('isLight', false)
-setSetting('inputNum', 5)
+const app = createApp(App);
 
-createApp(App).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+app.use(pinia); //use pinia
+app.use(router); //use router
+app.use(PrimeVue, {
+  theme: {
+    preset: Noir,
+  },
+});
+app.use(ToastService);
+app.mount("#app");

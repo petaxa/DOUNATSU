@@ -1,25 +1,38 @@
+<script setup lang="ts">
+import { WindowAction } from "./electron/type";
+
+function windowControl(action: WindowAction) {
+  window.electron.windowControl(action);
+}
+</script>
+
 <template>
-  <router-view/>
+  <header class="window-controls">
+    <i class="pi pi-minus" @click="windowControl('minimize')"></i>
+    <i class="pi pi-stop" @click="windowControl('maximize')"></i>
+    <i class="pi pi-times" @click="windowControl('close')"></i>
+  </header>
+  <RouterView />
 </template>
 
 <style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.window-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: #333;
+  padding: 10px;
+  position: fixed;
+  height: 35px;
+  width: 100%;
+  -webkit-app-region: drag;
+  z-index: 9999;
+}
+
+.window-controls i {
   color: white;
-} */
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  cursor: pointer;
+  margin: 0 10px;
+  -webkit-app-region: no-drag;
 }
 </style>
