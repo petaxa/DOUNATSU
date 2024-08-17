@@ -29,11 +29,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Snapcraft
+        run: sudo snap install snapcraft --classic
+
       - name: Build the app
         run: npm run build
 
       - name: Package the app for release
         run: npm run electron:build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release to GitHub
         uses: softprops/action-gh-release@v1
