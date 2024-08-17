@@ -29,7 +29,7 @@ jobs:
         run: npm run build
 
       - name: Package the app for release
-        run: npm run electron-builder -- -p always
+        run: npm run electron:build
 
       - name: Upload Release to GitHub
         uses: softprops/action-gh-release@v1
