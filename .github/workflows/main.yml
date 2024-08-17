@@ -39,3 +39,5 @@ jobs:
             release/*.dmg
             release/*.AppImage
             release/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
