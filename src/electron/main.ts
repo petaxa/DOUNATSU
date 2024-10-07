@@ -33,7 +33,6 @@ function createWindow() {
   } else {
     // Viteがビルドした静的ファイルをロード
     mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
-    mainWindow.webContents.openDevTools();
     console.log("Lunch Mode: BUILD");
 
     // アプリケーションが準備完了したら、更新を確認
