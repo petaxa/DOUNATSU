@@ -1,11 +1,11 @@
 ---
 layout: home
 
-title: DORTS
+title: DOUNATSU
 titleTemplate: Documentation for Developers
 
 hero:
-  name: DORTS
+  name: DOUNATSU
   text: Documentation for Developers
   actions:
     - theme: brand
