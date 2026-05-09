@@ -2,11 +2,13 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
+    "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "lib": ["ESNext", "DOM"],
     "baseUrl": ".",
